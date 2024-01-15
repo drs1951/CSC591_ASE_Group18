@@ -62,7 +62,8 @@ class DATA:
             u[col.txt] = col.mid()
         return ROW(u)
       
-def get_stats(data):
+def get_stats(file):
+  data = DATA(src = file)
   print(data.mid().cells)
   
 def arg_parser(argv):
@@ -76,13 +77,12 @@ def arg_parser(argv):
   return args
 
 def main():
-    args = arg_parser()
-    data = DATA(src = args.file)
-    print(sys.argv)
-    if (args.todo=='stats'):
-      get_stats(data)
+    args = arg_parser(sys.argv)
+        
+    if (args['todo']=='stats'):
+      get_stats(args['file'])
     else:
-      run_tests(args.todo)
+      run_tests(args['todo'])
     
 if __name__ == '__main__':
     # This code won't run if this file is imported.
