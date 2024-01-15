@@ -1,5 +1,5 @@
 import sys
-from tests import run_tests
+from hw2.test.tests import run_tests
 import random
 from data import DATA
 
