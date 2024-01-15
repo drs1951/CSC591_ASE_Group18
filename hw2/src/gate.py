@@ -1,6 +1,6 @@
 import math
+import sys
 import random
-import argparse
 from num import NUM
 from sym import SYM
 from col import COLS
@@ -64,14 +64,21 @@ class DATA:
       
 def get_stats(data):
   print(data.mid().cells)
+  
+def arg_parser(argv):
+  args = {}
+  for i in range(1, len(argv), 2):
+    if argv[i]=='-f' or argv[i]=='--file':
+      args['file'] = argv[i+1]
+    elif argv[i]=='-t' or argv[i]=='--todo':
+      args['todo'] = argv[i+1]
+  
+  return args
 
 def main():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('--file', '-f', help = "file path", type = str)
-    parser.add_argument('--todo', '-t', help = "action that need to be performed", type = str)
-    args = parser.parse_args()
+    args = arg_parser()
     data = DATA(src = args.file)
+    print(sys.argv)
     if (args.todo=='stats'):
       get_stats(data)
     else:
