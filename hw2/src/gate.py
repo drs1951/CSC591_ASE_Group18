@@ -1,6 +1,7 @@
 import sys
-from hw2.test.tests import run_tests
 import random
+sys.path.append("../CSC591_ASE_Group18/")
+from hw2.test.tests import *
 from data import DATA
 
 the = {
@@ -31,7 +32,7 @@ def help():
   sys.exit(0)
   
 def arg_parser(argv):
-  args = {}
+  args = {'todo': None}
   for i in range(1, len(argv), 2):
     if argv[i]=='-h' or argv[i]=='--help':
       help()
