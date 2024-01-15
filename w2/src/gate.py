@@ -1,6 +1,8 @@
 import math
 import random
 import argparse
+from num import NUM
+from sym import SYM
 
 # Assuming global settings are set somewhere in the code
 the = {
@@ -11,49 +13,6 @@ the = {
 }
 
 random.seed(the["seed"])
-
-class NUM:
-    def __init__(self, txt="", at=0):
-        self.txt = txt
-        self.at = at
-        self.n = 0
-        self.mu = 0
-        self.m2 = 0
-        self.hi = -1E30
-        self.lo = 1E30
-        self.heaven = 0 if txt.endswith('-') else 1
-
-    def add(self, x):
-        if x != "?":
-            x = float(x)
-            self.n += 1
-            d = x - self.mu
-            self.mu += d / self.n
-            self.m2 += d * (x - self.mu)
-            self.lo = min(x, self.lo)
-            self.hi = max(x, self.hi)
-
-    def mid(self):
-        return round(self.mu,2)
-
-class SYM:
-    def __init__(self, txt="", at=0):
-        self.txt = txt
-        self.at = at
-        self.n = 0
-        self.has = {}
-        self.mode = None
-        self.most = 0
-
-    def add(self, x):
-        if x != "?":
-            self.n += 1
-            self.has[x] = self.has.get(x, 0) + 1
-            if self.has[x] > self.most:
-                self.most, self.mode = self.has[x], x
-
-    def mid(self):
-        return self.mode
 
 class COLS:
     def __init__(self, row_cells):
@@ -139,8 +98,6 @@ class DATA:
             u[col.txt] = col.mid()
         return ROW(u)
 
-
-# print(d.mid().cells)
 
 parser = argparse.ArgumentParser()
 
