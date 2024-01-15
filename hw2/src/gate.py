@@ -17,15 +17,18 @@ def get_stats(file):
   print(data.mid().cells)
   
 def help():
-    print("OPTIONS:")
-    print("  -h --help     show help                       = false")
-    print("  -f --file     csv data file name              = ../../data/auto93.csv")
-    print("  -t --todo     todo an action command          = todo")
-    print("  -c --cohen    small effect size               = .35")
-    print("  -k --k        low class frequency kludge      = 1")
-    print("  -m --m        low attribute frequency kludge  = 2")
-    print("  -s --seed     random number seed              = 31210")
-    sys.exit(0)
+  helper_string = """
+  OPTIONS:
+    -h --help     show help                       = false
+    -f --file     csv data file name              = ../../data/auto93.csv
+    -t --todo     todo an action command          = todo
+    -c --cohen    small effect size               = .35
+    -k --k        low class frequency kludge      = 1
+    -m --m        low attribute frequency kludge  = 2
+    -s --seed     random number seed              = 31210
+  """
+  print(helper_string)
+  sys.exit(0)
   
 def arg_parser(argv):
   args = {}
