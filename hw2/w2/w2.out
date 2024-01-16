@@ -1,1 +1,8 @@
 {'.N': 398, 'Clndrs': 5.45, 'Volume': 193.43, 'Model': 76.01, 'origin': 1, 'Lbs-': 2970.42, 'Acc+': 15.57, 'Mpg+': 23.84}
+
+SYM: True
+NUM: True
+CSV: True
+
+Passed 3 out of 3 tests.
+All tests finished running.
