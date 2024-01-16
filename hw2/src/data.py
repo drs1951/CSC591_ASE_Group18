@@ -2,6 +2,7 @@ from col import COLS
 from row import ROW
 import re,ast,fileinput
 
+
 def coerce(s):
   try: return ast.literal_eval(s)
   except Exception: return s
