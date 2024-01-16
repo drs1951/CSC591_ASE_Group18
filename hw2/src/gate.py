@@ -21,7 +21,7 @@ def help():
   helper_string = """
   OPTIONS:
     -h --help     show help                       = false
-    -f --file     csv data file name              = ../../data/auto93.csv
+    -f --file     csv data file name              = data/auto93.csv
     -t --todo     todo an action command          = todo
     -c --cohen    small effect size               = .35
     -k --k        low class frequency kludge      = 1
@@ -32,7 +32,7 @@ def help():
   sys.exit(0)
   
 def arg_parser(argv):
-  args = {'todo': None}
+  args = {'todo': None, 'file': None}
   for i in range(1, len(argv), 2):
     if argv[i]=='-h' or argv[i]=='--help':
       help()
