@@ -47,4 +47,3 @@ the = SLOTS(**{m[1]:coerce(m[2]) for m in re.finditer( r"--(\w+)[^=]*=\s*(\S+)",
 
 the.bins=22
 the.bins += 1
-print(the)

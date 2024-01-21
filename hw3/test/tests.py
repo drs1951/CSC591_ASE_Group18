@@ -1,9 +1,8 @@
 import sys
 import random
-sys.path.append("../../CSC591_ASE_Group18/")
-from hw2.src.num import *
-from hw2.src.sym import *
-from hw2.src.data import *
+from hw3.src.num import *
+from hw3.src.sym import *
+from hw3.src.data import *
 
 def eg_sym():
     s = SYM()

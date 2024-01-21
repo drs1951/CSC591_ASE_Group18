@@ -1,7 +1,6 @@
 import sys
 import random
-sys.path.append("../CSC591_ASE_Group18/")
-from hw2.test.tests import *
+from hw3.test.tests import *
 from data import DATA
 
 the = {
