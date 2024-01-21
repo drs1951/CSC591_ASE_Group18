@@ -34,7 +34,7 @@ def learn(data, row, my):
 def eg_bayes():
     wme = {"acc": 0, "datas": {}, "tries": 0, "n": 0}
     data = DATA(src="data/diabetes.csv", fun=lambda data, t: learn(data, t, wme))
-    print(wme["acc"] / wme["tries"])
+    print(f"Accuracy of Naive Bayes Classifier: {(wme['acc'] / wme['tries'])}")
     return wme["acc"] / wme["tries"] > 0.72
 
 def run_all_tests():
@@ -49,7 +49,7 @@ def run_all_tests():
   print(f"Naive Bayes: {naive_bayes_result}")
 
   total_tests = 4
-  passed_tests = sum([sym_result, num_result, csv_result])
+  passed_tests = sum([sym_result, num_result, csv_result, naive_bayes_result])
   print(f"\nPassed {passed_tests} out of {total_tests} tests.")
   print('All tests finished running.\n')
 
