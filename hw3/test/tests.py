@@ -35,18 +35,26 @@ def learn(data, row, my):
 def eg_bayes(src):
     wme = {"acc": 0, "datas": {}, "tries": 0, "n": 0}
     data = DATA(src=src, fun=lambda data, t: learn(data, t, wme))
-    print(f"Accuracy of Naive Bayes Classifier: {(wme['acc'] / wme['tries'])}")
+    print(f"For k={the.k} and m={the.m}: {(wme['acc'] / wme['tries'])}")
     return wme["acc"] / wme["tries"]
   
 def diabetes():
+  print("\nAccuracy of Naive Bayes Classifier on Diabetes Dataset:")
   return eg_bayes("data/diabetes.csv") > 0.72
 
 def soybean():
+  best_acc,best_k,best_m=0,0,0
+  print("\nAccuracy of Naive Bayes Classifier on Soybean Dataset:")
   for k in range(4):
     the.k = k
     for m in range(4):
       the.m = m
-      eg_bayes("data/soybean.csv")
+      current_acc = eg_bayes("data/soybean.csv")
+      if current_acc > best_acc:
+                best_acc = current_acc
+                best_k = k
+                best_m = m
+  print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
 
 def run_all_tests():
   sym_result = eg_sym()
@@ -58,7 +66,7 @@ def run_all_tests():
   print(f"\nSYM: {sym_result}")
   print(f"NUM: {num_result}")
   print(f"CSV: {csv_result}")
-  print(f"Diabetes: {diabetes_result}")
+  print(f"Naive Bayes on Diabetes Dataset: {diabetes_result}")
 
   total_tests = 4
   passed_tests = sum([sym_result, num_result, csv_result, diabetes_result])
