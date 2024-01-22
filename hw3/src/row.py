@@ -14,7 +14,8 @@ class ROW:
             v = self.cells[col.at]
             if v != "?":
                 inc = col.like(v, prior)
-                out += math.log(inc)
+                if inc!=0:
+                  out += math.log(inc)
         return math.exp(out)
     
     def likes(self, datas):

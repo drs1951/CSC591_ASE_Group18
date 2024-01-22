@@ -22,4 +22,6 @@ class SYM:
         return self.mode
     
     def like(self, x, prior):
+        if (self.n + the["m"]) == 0:
+          return (self.has.get(x, 0) or 0) + the["m"] * prior
         return ((self.has.get(x, 0) or 0) + the["m"] * prior) / (self.n + the["m"])
