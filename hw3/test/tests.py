@@ -39,6 +39,33 @@ def test_sym_like_with_zero_n_and_m():
     result = s.like("SomeValue", 0.5)
     return result== the["m"] * 0.5
 
+def test_num_like_with_valid_input():
+      n = NUM()
+      # Test the like method with valid input
+      x = 2.0
+      prior = 1.5
+      result = n.like(x, prior)
+      return (result>= 0.0)
+
+def test_num_like_with_zero_divisor():
+      n = NUM()
+      # Test the like method with a divisor of zero
+      x = 2.0
+      prior = 0.0
+      result = n.like(x, prior)
+      return (result == 0.0)
+
+
+def test_num_like_with_large_sd():
+      n = NUM()
+      # Test the like method with a large standard deviation
+      x = 2.0
+      prior = 1.5
+      # Set a large standard deviation to test if the method handles it gracefully
+      n.div = lambda: 1E30
+      result = n.like(x, prior)
+      return (result>= 0.0)
+
 def learn(data, row, my):
     my["n"] = my["n"] + 1
     kl = row.cells[data.cols.klass.at]
@@ -53,7 +80,7 @@ def eg_bayes(src):
     data = DATA(src=src, fun=lambda data, t: learn(data, t, wme))
     print(f"For k={the.k} and m={the.m}: {(wme['acc'] / wme['tries'])}")
     return wme["acc"] / wme["tries"]
-  
+
 def diabetes():
   print("\nAccuracy of Naive Bayes Classifier on Diabetes Dataset:")
   return eg_bayes("data/diabetes.csv") > 0.72
@@ -81,6 +108,9 @@ def run_all_tests():
   best_acc,best_k, best_m = soybean()
   sym_like_1=test_sym_like_with_existing_value()
   sym_like_2=test_sym_like_with_zero_n_and_m()
+  num_like_1=test_num_like_with_valid_input()
+  num_like_2=test_num_like_with_zero_divisor()
+  num_like_3=test_num_like_with_large_sd()
 
   print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
   display()
@@ -92,9 +122,12 @@ def run_all_tests():
   print(f"SYM LIKE T1: {sym_like_1}")
   print(f"SYM LIKE T2: {sym_like_2}")
   print(f"Naive Bayes on Diabetes Dataset: {diabetes_result}")
+  print(f"Num Like l1: {num_like_1}")
+  print(f"Num Like l2: {num_like_2}")
+  print(f"Num Like l3: {num_like_3}")
 
-  total_tests = 4
-  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result])
+  total_tests = 9
+  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result,sym_like_1,sym_like_2,num_like_1,num_like_2,num_like_3])
   print(f"\nPassed {passed_tests} out of {total_tests} tests.")
   print('All tests finished running.\n')
 

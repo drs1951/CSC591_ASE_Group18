@@ -58,11 +58,16 @@ herbicide-injury                1.171303
 Name: count, dtype: float64
 ================================================================================
 
-SYM: True
-NUM: True
+SYM MID: True
+NUM MID: True
 CSV: True
+SYM LIKE T1: True
+SYM LIKE T2: True
 Naive Bayes on Diabetes Dataset: True
+Num Like l1: True
+Num Like l2: True
+Num Like l3: True
 
-Passed 4 out of 4 tests.
+Passed 9 out of 9 tests.
 All tests finished running.
 
