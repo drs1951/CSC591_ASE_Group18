@@ -6,14 +6,14 @@ from hw3.src.data import *
 from hw3.config import *
 from hw3.src.ascii import *
 
-def eg_sym():
+def eg_sym_mid():
     s = SYM()
     for x in ["a", "a", "a", "a", "b", "b", "c"]:
         s.add(x)
     mode = s.mid()
     return mode == "a"
 
-def eg_num():
+def eg_num_mid():
     e = NUM()
     for _ in range(1000):
         e.add(random.normalvariate(10, 2))
@@ -23,6 +23,21 @@ def eg_num():
 def eg_csv():
     d = DATA('data/auto93.csv')
     return len(d.rows)-1 == 398
+
+def test_sym_like_with_existing_value():
+    s = SYM()
+    s.add("Existing")
+    result = s.like("Existing", 0.5)
+    expected = (s.has["Existing"] + the["m"] * 0.5) / (s.n + the["m"])
+    return result==expected
+
+def test_sym_like_with_zero_n_and_m():
+    # Setting n and m to zero
+    s = SYM()
+    s.n = 0
+    the["m"] = 0
+    result = s.like("SomeValue", 0.5)
+    return result== the["m"] * 0.5
 
 def learn(data, row, my):
     my["n"] = my["n"] + 1
@@ -59,22 +74,27 @@ def soybean():
 
 
 def run_all_tests():
-  sym_result = eg_sym()
-  num_result = eg_num()
+  sym_mid_result = eg_sym_mid()
+  num_mid_result = eg_num_mid()
   csv_result = eg_csv()
   diabetes_result = diabetes()
   best_acc,best_k, best_m = soybean()
+  sym_like_1=test_sym_like_with_existing_value()
+  sym_like_2=test_sym_like_with_zero_n_and_m()
+
   print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
   display()
 
 
-  print(f"\nSYM: {sym_result}")
-  print(f"NUM: {num_result}")
+  print(f"\nSYM MID: {sym_mid_result}")
+  print(f"NUM MID: {sym_mid_result}")
   print(f"CSV: {csv_result}")
+  print(f"SYM LIKE T1: {sym_like_1}")
+  print(f"SYM LIKE T2: {sym_like_2}")
   print(f"Naive Bayes on Diabetes Dataset: {diabetes_result}")
 
   total_tests = 4
-  passed_tests = sum([sym_result, num_result, csv_result, diabetes_result])
+  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result])
   print(f"\nPassed {passed_tests} out of {total_tests} tests.")
   print('All tests finished running.\n')
 
@@ -82,9 +102,9 @@ def run_tests(test_name):
   if (test_name=='all'):
     run_all_tests()
   elif (test_name=='sym'):
-    print(eg_sym())
+    print(eg_sym_mid())
   elif (test_name=='num'):
-     print(eg_num())
+     print(eg_num_mid())
   elif (test_name=='csv'):
      print(eg_csv())
   elif (test_name=='naive_bayes'):
