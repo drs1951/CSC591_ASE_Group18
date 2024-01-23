@@ -21,6 +21,42 @@ For k=3 and m=2: 0.8231797919762258
 For k=3 and m=3: 0.7949479940564635
 
 Therefore, the best accuracy for soybean is 0.8514115898959881 for k=3 and m=1.
+================================================================================
+
+ASCII table for diabetes
+Number of classes in diabetes file: 2
+Number of rows for each class in %:
+class!
+negative    65.104167
+positive    34.895833
+Name: count, dtype: float64
+================================================================================
+
+ASCII table for Soybean
+Number of classes in diabetes file: 19
+Number of rows for each class in %:
+class!
+brown-spot                     13.469985
+frog-eye-leaf-spot             13.323572
+alternarialeaf-spot            13.323572
+phytophthora-rot               12.884334
+brown-stem-rot                  6.442167
+anthracnose                     6.442167
+diaporthe-stem-canker           2.928258
+purple-seed-stain               2.928258
+phyllosticta-leaf-spot          2.928258
+bacterial-pustule               2.928258
+charcoal-rot                    2.928258
+bacterial-blight                2.928258
+downy-mildew                    2.928258
+powdery-mildew                  2.928258
+rhizoctonia-root-rot            2.928258
+2-4-d-injury                    2.342606
+diaporthe-pod-&-stem-blight     2.196193
+cyst-nematode                   2.049780
+herbicide-injury                1.171303
+Name: count, dtype: float64
+================================================================================
 
 SYM: True
 NUM: True

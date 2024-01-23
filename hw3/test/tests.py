@@ -4,6 +4,7 @@ from hw3.src.num import *
 from hw3.src.sym import *
 from hw3.src.data import *
 from hw3.config import *
+from hw3.src.ascii import *
 
 def eg_sym():
     s = SYM()
@@ -54,14 +55,18 @@ def soybean():
                 best_acc = current_acc
                 best_k = k
                 best_m = m
-  print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
+  return best_acc,best_k,best_m
+
 
 def run_all_tests():
   sym_result = eg_sym()
   num_result = eg_num()
   csv_result = eg_csv()
   diabetes_result = diabetes()
-  soybean_result = soybean()
+  best_acc,best_k, best_m = soybean()
+  print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
+  display()
+
 
   print(f"\nSYM: {sym_result}")
   print(f"NUM: {num_result}")
