@@ -79,7 +79,7 @@ class DATA:
             # print("4: rand", y values of centroid of (from DARK, select BUDGET0+i rows at random))
             ans[3].append("4: rand \n " + str(self.get_centroid(random.sample(dark,budget0+i), 5, 8)))
             ans[4].append("5: mid \n " + str(self.get_centroid(selected.rows[1:], 5, 8)))
-            ans[5].append("6: top: \n " + str(best.rows[1].cells))
+            ans[5].append("6: top: \n " + str(best.rows[1].cells[5:8]))
             stats.append(selected.mid())
             bests.append(best.rows[1])
             lite.append(dark.pop(todo))
