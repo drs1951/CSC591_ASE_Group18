@@ -85,6 +85,24 @@ def eg_gate20():
         print (round(best.d2h(d),2), round(stat.d2h(d),2))
     return ans
 
+def eg_test_d2h():
+  d = DATA(src="data/auto93.csv")
+  test_row = ROW(cells = [8,400,230,73,	1,	4278,	9.5,	20])
+  result = test_row.d2h(d)
+  return round(result,2) >= 0.8 or round(result,2) <0.83
+
+
+def nonempty_test_for_gate():
+  #check if the given out is not empty
+  d = DATA(src="data/auto93.csv")
+  budget0 = 4
+  budget = 16
+  some = 0.5
+  ans = ans = [[],[],[],[],[],[]]
+  stats, best = d.gate(budget0, budget, some, ans)
+  if stats and best:
+     return True
+
 def run_all_tests():
   sym_mid_result = eg_sym_mid()
   num_mid_result = eg_num_mid()
@@ -93,6 +111,8 @@ def run_all_tests():
   best_acc,best_k, best_m = soybean()
   sym_like_1=test_sym_like_with_existing_value()
   sym_like_2=test_sym_like_with_zero_n_and_m()
+  d2h_test = eg_test_d2h()
+  nempty = nonempty_test_for_gate()
 
   print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
 
@@ -103,9 +123,11 @@ def run_all_tests():
   print(f"SYM LIKE T1: {sym_like_1}")
   print(f"SYM LIKE T2: {sym_like_2}")
   print(f"Naive Bayes on Diabetes Dataset: {diabetes_result}")
+  print(f"d2h test: {d2h_test}")
+  print(f"nonEmpty result eg_gate20: {nempty}")
 
-  total_tests = 4
-  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result])
+  total_tests = 6
+  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result,d2h_test,nempty])
   print(f"\nPassed {passed_tests} out of {total_tests} tests.")
   print('All tests finished running.\n')
 
@@ -123,7 +145,10 @@ def run_tests(test_name):
      print(eg_csv())
   elif (test_name=='eg_gate20'):
      ans = eg_gate20()
+  elif (test_name == 'eg_test_d2h'):
+     eg_test_d2h()
      for i in ans:
        for j in i:
          print(j)
          print()
+
