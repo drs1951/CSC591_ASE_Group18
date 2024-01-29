@@ -74,15 +74,16 @@ def soybean():
 
 def eg_gate20():
     print("#best, mid")
+    ans = [[],[],[],[],[],[]]
     for i in range(20):
         the.seed = i*10
         d = DATA(src="data/auto93.csv")
-        stats, bests = d.gate(4, 16, 0.5)
+        stats, bests = d.gate(4, 16, 0.5, ans)
         stat, best = stats[-1], bests[-1]
-        print(bests[-1].cells)
-        print(stats[-1].cells)
+        # print(bests[-1].cells)
+        # print(stats[-1].cells)
         print (round(best.d2h(d),2), round(stat.d2h(d),2))
-    return 0
+    return ans
 
 def run_all_tests():
   sym_mid_result = eg_sym_mid()
@@ -121,4 +122,8 @@ def run_tests(test_name):
   elif (test_name=='naive_bayes'):
      print(eg_csv())
   elif (test_name=='eg_gate20'):
-     print(eg_gate20())
+     ans = eg_gate20()
+     for i in ans:
+       for j in i:
+         print(j)
+         print()

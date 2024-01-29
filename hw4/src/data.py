@@ -58,19 +58,28 @@ class DATA:
             u[col.txt] = col.mid()
         return ROW(u)
 
-    def gate(self, budget0, budget, some):
+    def gate(self, budget0, budget, some, ans):
+        rows = random.sample(self.rows[1:], len(self.rows)-1)
+        ans[0].append("1. top 6 \n " + str([top_6.cells[5:8] for top_6 in rows[:6]]))
+        ans[1].append("2. top 50 \n " + str([top_50.cells[5:8] for top_50 in rows[:50]]))
+        rows.sort(key=lambda x: x.d2h(self))
+        ans[2].append("3. most \n " + str(rows[1].cells[5:8]))
         rows = random.sample(self.rows[1:], len(self.rows)-1)
         lite = rows[:budget0]
         dark = rows[budget0:]
         stats = []
         bests = []
-
         # print([x.cells for x in lite])
         # print("_++_+_+____")
         # print([x.cells for x in dark])
         for i in range(budget):
             best, rest = self.best_rest(lite, len(lite) ** some)
             todo, selected = self.split(best, rest, lite, dark)
+            
+            # print("4: rand", y values of centroid of (from DARK, select BUDGET0+i rows at random))
+            ans[3].append("4: rand \n " + str(self.get_centroid(random.sample(dark,budget0+i), 5, 8)))
+            ans[4].append("5: mid \n " + str(self.get_centroid(selected.rows[1:], 5, 8)))
+            ans[5].append("6: top: \n " + str(best.rows[1].cells))
             stats.append(selected.mid())
             bests.append(best.rows[1])
             lite.append(dark.pop(todo))
@@ -102,3 +111,14 @@ class DATA:
             (best if i < want else rest).append(row.cells)
         # print(best,rest)
         return DATA(best), DATA(rest)
+      
+    def get_centroid(self, rows, i, j):
+      centroid = []
+      for k in range(i,j):
+        centroid.append(0)
+      for row in rows:
+        y = row.cells[i:j]
+        centroid = [sum(k) for k in zip(y, centroid)]
+      for k in range(len(centroid)):
+        centroid[k]/=len(rows)
+      return centroid
