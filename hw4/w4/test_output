@@ -1,0 +1,37 @@
+all
+
+Accuracy of Naive Bayes Classifier on Diabetes Dataset:
+For k=1 and m=1: 0.7308707124010554
+
+Accuracy of Naive Bayes Classifier on Soybean Dataset:
+For k=0 and m=0: 0.04457652303120357
+For k=0 and m=1: 0.8454680534918276
+For k=0 and m=2: 0.8142644873699851
+For k=0 and m=3: 0.7845468053491828
+For k=1 and m=0: 0.04606240713224369
+For k=1 and m=1: 0.849925705794948
+For k=1 and m=2: 0.8157503714710252
+For k=1 and m=3: 0.7890044576523031
+For k=2 and m=0: 0.04606240713224369
+For k=2 and m=1: 0.849925705794948
+For k=2 and m=2: 0.8187221396731055
+For k=2 and m=3: 0.7919762258543833
+For k=3 and m=0: 0.04903417533432392
+For k=3 and m=1: 0.8514115898959881
+For k=3 and m=2: 0.8231797919762258
+For k=3 and m=3: 0.7949479940564635
+SYM MID: True
+NUM MID: True
+CSV: True
+Naive Bayes on Diabetes Dataset: True
+
+Therefore, the best accuracy for soybean is 0.8514115898959881 for k=3 and m=1.
+SYM LIKE T1: True
+SYM LIKE T2: True
+d2h test: True
+nonEmpty result eg_gate20: True
+Get Centroid: True
+
+Passed 10 out of 10 tests.
+All tests finished running.
+
