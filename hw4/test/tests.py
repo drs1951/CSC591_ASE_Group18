@@ -158,10 +158,11 @@ def run_tests(test_name):
      print(eg_csv())
   elif (test_name=='eg_gate20'):
      ans = eg_gate20()
-  elif (test_name == 'eg_test_d2h'):
-     eg_test_d2h()
      for i in ans:
        for j in i:
          print(j)
          print()
+  elif (test_name == 'eg_test_d2h'):
+     eg_test_d2h()
+     
 
