@@ -26,10 +26,6 @@ class DATA:
             for row in (src or []):
                 self.add(ROW(row), fun)
 
-            # for x in (src or []):
-            #     print(x)
-            #     self.add(x, fun)
-
     def add(self, row, fun=None):
 
         if self.cols is None:
@@ -63,15 +59,13 @@ class DATA:
         ans[0].append("1. top 6 \n " + str([top_6.cells[5:8] for top_6 in rows[:6]]))
         ans[1].append("2. top 50 \n " + str([top_50.cells[5:8] for top_50 in rows[:50]]))
         rows.sort(key=lambda x: x.d2h(self))
-        ans[2].append("3. most \n " + str(rows[1].cells[5:8]))
+        ans[2].append("3. most \n " + str(rows[0].cells[5:8]))
         rows = random.sample(self.rows[1:], len(self.rows)-1)
         lite = rows[:budget0]
         dark = rows[budget0:]
         stats = []
         bests = []
-        # print([x.cells for x in lite])
-        # print("_++_+_+____")
-        # print([x.cells for x in dark])
+
         for i in range(budget):
             best, rest = self.best_rest(lite, len(lite) ** some)
             todo, selected = self.split(best, rest, lite, dark)
@@ -88,7 +82,7 @@ class DATA:
 
     def split(self, best, rest, lite, dark):
         selected = DATA([self.cols.names])
-        max_val = 1E30 # - infinity
+        max_val = 1E30
         out = 1
 
         for i, row in enumerate(dark):
