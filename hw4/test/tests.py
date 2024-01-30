@@ -102,34 +102,47 @@ def nonempty_test_for_gate():
   stats, best = d.gate(budget0, budget, some, ans)
   if stats and best:
      return True
+  
+def test_get_centroid():
+  d = DATA(src="data/auto93.csv")
+  rows = [ROW([1, 2, 3]), ROW([4, 5, 6])]
+  centroid = d.get_centroid(rows, 0, 3)
+    
+  # Assertions
+  # Expected centroid is the average of columns [col1, col2, col3]
+  expected_centroid = [2.5, 3.5, 4.5]  # [(1+4)/2, (2+5)/2, (3+6)/2]
+  return centroid == expected_centroid
 
 def run_all_tests():
-  sym_mid_result = eg_sym_mid()
-  num_mid_result = eg_num_mid()
-  csv_result = eg_csv()
-  diabetes_result = diabetes()
-  best_acc,best_k, best_m = soybean()
-  sym_like_1=test_sym_like_with_existing_value()
-  sym_like_2=test_sym_like_with_zero_n_and_m()
-  d2h_test = eg_test_d2h()
-  nempty = nonempty_test_for_gate()
+    # Store test functions and their results
+    test_results = {
+        "SYM MID": eg_sym_mid(),
+        "NUM MID": eg_num_mid(),
+        "CSV": eg_csv(),
+        "Naive Bayes on Diabetes Dataset": diabetes(),
+        "soybean": soybean(),  
+        "SYM LIKE T1": test_sym_like_with_existing_value(),
+        "SYM LIKE T2": test_sym_like_with_zero_n_and_m(),
+        "d2h test": eg_test_d2h(),
+        "nonEmpty result eg_gate20": nonempty_test_for_gate(),
+        "Get Centroid": test_get_centroid(),
+    }
 
-  print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
+    # Print results for each test
+    for test_name, result in test_results.items():
+        if test_name == "soybean":
+            best_acc, best_k, best_m = result
+            print(f"\nTherefore, the best accuracy for soybean is {best_acc} for k={best_k} and m={best_m}.")
+        else:
+            print(f"{test_name}: {result}")
 
+    # Count the total and passed tests
+    total_tests = len(test_results)
+    # Assuming a test is considered 'passed' if its result is True or, in the case of soybean, if it returns a valid tuple
+    passed_tests = sum(1 for result in test_results.values() if result or isinstance(result, tuple))
 
-  print(f"\nSYM MID: {sym_mid_result}")
-  print(f"NUM MID: {sym_mid_result}")
-  print(f"CSV: {csv_result}")
-  print(f"SYM LIKE T1: {sym_like_1}")
-  print(f"SYM LIKE T2: {sym_like_2}")
-  print(f"Naive Bayes on Diabetes Dataset: {diabetes_result}")
-  print(f"d2h test: {d2h_test}")
-  print(f"nonEmpty result eg_gate20: {nempty}")
-
-  total_tests = 6
-  passed_tests = sum([sym_mid_result, num_mid_result, csv_result, diabetes_result,d2h_test,nempty])
-  print(f"\nPassed {passed_tests} out of {total_tests} tests.")
-  print('All tests finished running.\n')
+    print(f"\nPassed {passed_tests} out of {total_tests} tests.")
+    print('All tests finished running.\n')
 
 def run_tests(test_name):
   print(test_name)
