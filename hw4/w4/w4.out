@@ -1,5 +1,5 @@
 1. does SMO do better than the random baselines (see prints 1,2,4)? 
-    Yes
+Yes. From the print statements we can see that we are getting lower average value of  lbs  in case of SMO than the baseline. Which indicates that the SMO is performing better than baselines. Also in the case of acc and mpg, SMO achieves higher results than all others. Which signifies that SMO is better than random baselines. 
 
 2. how many y row evaluations are required for print 3? 
    overall best and top50 best were almost similar so evaluating top50 is enoguh for this dataset.
