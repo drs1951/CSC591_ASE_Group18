@@ -1,6 +1,6 @@
 SMO Performance Analysis
 
-1. Does SMO do better than the random baselines (see prints 1,2,4)?
+1. Does SMO do better than the random baselines (see print 1,2,4)?
 
 Answer: Yes. From the print statements, we can see that we are getting a lower average value of lbs in the case of SMO than the baseline. This indicates that SMO is performing better than baselines. Also, in the case of acc and mpg, SMO achieves higher results than all others, signifying that SMO is better than random baselines.
 
