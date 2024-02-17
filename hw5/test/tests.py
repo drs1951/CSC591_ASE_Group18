@@ -19,14 +19,20 @@ def eg_far():
     print(l.o(b))
     print(C)
 
+def eg_tree():
+    t, evals = DATA("data/auto93.csv").tree(True)
+    t.show()
+    print(evals)
+
 # def eg_tree():
 #     data, evals = DATA("data/auto93.csv").tree(True)
 #     data.show()
 #     print(evals)
 
 def run_tests(d):
-    print("Output of distance function")
-    eg_dist()
-    print()
-    print("Output of Far function")
-    eg_far()
+    eg_tree()
+    # print("Output of distance function")
+    # eg_dist()
+    # print()
+    # print("Output of Far function")
+    # eg_far()
