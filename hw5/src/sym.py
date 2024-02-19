@@ -14,6 +14,9 @@ class SYM:
             if self.has[x] > self.most:
                 self.most, self.mode = self.has[x], x
 
+    def mid(self):
+        return self.mode
+    
     def dist(self, x, y):
         if x == "?" and y == "?":
             return 1
