@@ -22,16 +22,29 @@ def eg_far():
 def eg_tree():
     t, evals = DATA("data/auto93.csv").tree(True)
     t.show()
-    print(evals)
+    print(f"evals: {evals}")
 
-# def eg_tree():
-#     data, evals = DATA("data/auto93.csv").tree(True)
-#     data.show()
-#     print(evals)
+def eg_branch():
+    d = DATA("data/auto93.csv")
+    best, rest, evals = d.branch()
+    print(best.mid().cells)
+    print(f"evals: {evals}")
+
+def eg_doubletap():
+    d = DATA("data/auto93.csv")
+    best1, rest, evals1 = d.branch(32)
+    best2, _, evals2 = best1.branch(4)
+    print(best2.mid().cells, rest.mid().cells)
+    print(evals1 + evals2)
 
 def run_tests(d):
+    print("Cluster Output")
     eg_tree()
-    # print("Output of distance function")
+    print("\nOptimization Output")
+    print("\nSingle Descent Output")
+    eg_branch()
+    print("\nDouble Tap Output")
+    eg_doubletap()
     # eg_dist()
     # print()
     # print("Output of Far function")

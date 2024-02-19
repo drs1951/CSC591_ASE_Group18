@@ -51,6 +51,7 @@ class DATA:
                 ans.append(col.mid())
             ans.insert(2, 0)
             return ROW(ans)
+            
         u[".N"] = len(self.rows)-1
         for _,col in target_cols.items():
             u[col.txt] = col.mid()
@@ -89,37 +90,6 @@ class DATA:
 
         return as_, bs, a, b, C, a.dist(bs[0], self), evals
 
-    # def tree(self, sortp=True):
-    #     evals = 0
-
-    #     def _tree(data, above=None):
-    #         nonlocal evals
-    #         node = NODE(data)
-    #         if len(data.rows) > 2 * (len(self.rows) ** 0.5):
-    #             lefts, rights, node.left, node.right, node.C, node.cut, evals1 = self.half(data.rows, sortp, above)
-    #             evals += evals1
-    #             node.lefts = _tree(self.clone(lefts))
-    #             node.rights = _tree(self.clone(rights))
-    #         return node
-
-    #     return _tree(self), evals
-
-    # def tree(self, sortp=True):
-    #     evals=0
-    #     def _tree(data, depth=0):
-    #         if len(data.rows) <= 1:
-    #             return {"data": data, "depth": depth}
-    #         left_rows, right_rows = self.half(data.rows, sortp)
-    #         left_data = data.clone(left_rows)
-    #         right_data = data.clone(right_rows)
-    #         return {
-    #             "left": _tree(left_data, depth+1),
-    #             "right": _tree(right_data, depth+1),
-    #             "depth": depth
-    #         }
-        
-    #     return _tree(self), evals
-
     def tree(self, sortp=True):
         evals = 0
 
@@ -129,20 +99,27 @@ class DATA:
             if len(data.rows) > 2 * math.sqrt(len(self.rows)):
                 lefts, rights, node.left, node.right, node.C, node.cut, evals1 = data.half(data.rows, sortp, above)
                 evals += evals1
-                node.left = _tree(data.clone(lefts))
-                node.right = _tree(data.clone(rights))
-                print(node.left, node.right)
+                node.lefts = _tree(data.clone(lefts))
+                node.rights = _tree(data.clone(rights))
             return node
 
         root = _tree(self)
         return root, evals
 
-    def branch(self, stop=2):
-        def _branch(data, depth=0):
-            if len(data.rows) <= stop:
-                return {"data": data, "depth": depth}
-            left_rows, right_rows = self.half(data.rows, True)
-            left_data = data.clone(left_rows)
-            return _branch(left_data, depth+1)
-        
+    def branch(self, stop=None):
+        evals = 1
+        rest = []
+
+        stop = stop or (2 * len(self.rows) ** 0.5)
+
+        def _branch(data, above=None, left=None, lefts=None, rights=None):
+            nonlocal evals
+            if len(data.rows) > stop:
+                lefts, rights, left, b, C, dis_a_to_bs, _ = data.half(data.rows[1:], True, above)
+                evals += 1
+                rest.extend(rights)
+                return _branch(data.clone(lefts), left)
+            else:
+                return data.clone(data.rows[1:]), data.clone(rest), evals
+
         return _branch(self)
