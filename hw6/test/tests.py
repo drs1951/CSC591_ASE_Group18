@@ -6,6 +6,9 @@ from hw6.src.data import *
 from hw6.config import *
 from hw6.src.ascii import *
 from datetime import datetime
+from hw6.src.stats import SAMPLE, eg0
+import statistics
+from hw6.src import l
 
 def eg_sym_mid():
     s = SYM()
@@ -86,26 +89,76 @@ def eg_gate20():
         print (round(best.d2h(d),2), round(stat.d2h(d),2))
     return ans
 
-def eg_smo9():
-   d = DATA(src="data/auto93.csv")
-   current_datetime = datetime.now()
-   print(f'Date: {current_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
-   print("file: ../data/auto93.csv")
-   print("repeats: 20")
-   print(f'seed: {the.seed}')
-   print(f"rows: {len(d.rows)-1}")
-   print(f"cols: {len(d.rows[0].cells)}")
-   print(f'names:\t\t {d.cols.names} D2h-')
-   print(f"mid: \t\t{d.mid().cells} \t {round(d.mid().d2h(d),2)}")
-   div = [round(col.div(), 2) for col in (d.cols.all)]
-   print(f"div:\t\t {div} \t {round(ROW(div).d2h(d),2)}")
+def data_info(d):
+    current_datetime = datetime.now()
+    print(f'Date: {current_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
+    print("file: ../data/auto93.csv")
+    print("repeats: 20")
+    print(f'seed: {the.seed}')
+    print(f"rows: {len(d.rows)-1}")
+    print(f"cols: {len(d.rows[0].cells)}")
 
-   stats, bests = d.smo9(4, 5, 0.5)
-   any50(d)
+def eg_smo9():
+    print("Task: 1\n")
+    d = DATA(src="data/auto93.csv")
+    data_info(d)
+    print(f'names:\t\t {d.cols.names} D2h-')
+    print(f"mid: \t\t{d.mid().cells} \t {round(d.mid().d2h(d),2)}")
+    div = [round(col.div(), 2) for col in (d.cols.all)]
+    print(f"div:\t\t {div} \t {round(ROW(div).d2h(d),2)}")
+
+    stats, bests = d.smo9(4, 5, 0.5)
+    any50(d)
+    
+def get_baseline(d):
+    random.seed(the.seed)
+    baseline = [row.d2h(d) for row in d.rows[1:]]
+    return baseline    
+
+def get_rand(d, n):
+    random.seed(the.seed)
+    rand_list = []
+    for i in range(20):
+        rows = d.rows[1:]
+        random.shuffle(rows)
+        rand_rows = random.sample(rows,n)
+        rand_rows.sort(key=lambda row: row.d2h(d))
+        rand_list.append(round(rand_rows[0].d2h(d),2))
+    return rand_list
+
+def bonr(d,n):
+    random.seed(the.seed)
+    rand_list = []
+    for i in range(20):
+        stats, bests = d.gate(4, n-4, 0.5, [[],[],[],[],[],[]])
+        stat, best = stats[-1], bests[-1]
+        rand_list.append(round(best.d2h(d),2))
+    return rand_list
+   
+def eg_part_2_stats():
+  print("Task: 2\n")
+  d = DATA(src="data/auto93.csv")
+  data_info(d)
+  sorted_rows =  sorted(d.rows[1:], key=lambda x: x.d2h(d))
+  print(f"best: {l.o(sorted_rows[0].d2h(d),ndecs=2)}")
+  # random.seed(the.seed)
+  baseline = get_baseline(d)
+  print(f"tiny: {l.o(statistics.stdev(baseline)*0.35,ndecs=2)}")
+  print("#base #bonr9 #rand9 #bonr15 #rand15 #bonr20 #rand20 #rand358 ")
+  eg0([
+      SAMPLE(get_rand(d,9), "rand9"),
+      SAMPLE(get_rand(d,15), "rand15"),
+      SAMPLE(get_rand(d,20), "rand20"), 
+      SAMPLE(get_rand(d,358), "rand358"), 
+      SAMPLE(bonr(d,9), "bonr9"),
+      SAMPLE(bonr(d,15), "bonr15"),
+      SAMPLE(bonr(d,20), "bonr20"),
+      SAMPLE(get_baseline(d), "base")
+  ])
 
 def any50(d):
     random.seed(the.seed)
-    rows = d.rows[:]  # Copying the list
+    rows = d.rows[:]
     random.shuffle(rows)
     
     for i in range(0, 50):
@@ -190,7 +243,8 @@ def run_tests(test_name):
          print()
   elif (test_name == 'eg_test_d2h'):
      eg_test_d2h()
-  elif (test_name == 'eg_smo9'):
+  elif (test_name == 'eg_hw6'):
      eg_smo9()
-     
+     print("\n\n\n")
+     eg_part_2_stats()
 
