@@ -1,8 +1,3 @@
-import sys
-sys.path.append("../CSC591_ASE_Group18/")
-from hw6.config import *
-import math
-
 class SYM:
     def __init__(self, txt="", at=0):
         self.txt = txt
@@ -22,13 +17,7 @@ class SYM:
     def mid(self):
         return self.mode
     
-    def div(self, e=None):
-        e = 0
-        for _, v in self.has.items():
-            e -= v / self.n * math.log(v / self.n, 2)
-        return e
-    
-    def like(self, x, prior):
-        if (self.n + the["m"]) == 0:
-          return (self.has.get(x, 0) or 0) + the["m"] * prior
-        return ((self.has.get(x, 0) or 0) + the["m"] * prior) / (self.n + the["m"])
+    def dist(self, x, y):
+        if x == "?" and y == "?":
+            return 1
+        return 0 if x == y else 1

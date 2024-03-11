@@ -1,7 +1,7 @@
 import sys
 import random
 sys.path.append("../CSC591_ASE_HW_Group12/")
-from hw6.test.tests import *
+from hw7.test.tests import *
 from data import DATA
 
 the = {
@@ -52,5 +52,4 @@ def main():
       run_tests(args['todo'])
     
 if __name__ == '__main__':
-    # This code won't run if this file is imported.
     main()
