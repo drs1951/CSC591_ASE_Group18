@@ -1,3 +1,4 @@
+from hw7.config import *
 import math
 
 class NUM:
@@ -20,19 +21,9 @@ class NUM:
             self.m2 += d * (x - self.mu)
             self.lo = min(x, self.lo)
             self.hi = max(x, self.hi)
-
+    
     def mid(self):
         return round(self.mu,2)
-    
-    def div(self):
-        return math.sqrt(self.m2 / (self.n - 1)) if self.n >= 2 else 0
-    
-    def like(self, x, prior):
-        x = float(x)
-        mu, sd = self.mid(), self.div() + 1E-30
-        nom = math.exp(-0.5 * (x - mu)**2 / sd**2)
-        denom = sd * 2.5 + 1E-30
-        return nom / denom
     
     def norm(self, x):
         if x == "?":
@@ -40,3 +31,19 @@ class NUM:
         else:
             x = float(x)
             return (x - self.lo) / (self.hi - self.lo + 1E-30)  # Adding a small constant to avoid division by zero
+
+    def dist(self, x, y):
+        if x == "?" and y == "?":
+            return 1
+        x, y = self.norm(x), self.norm(y)
+        if x == "?":
+            x = 1 if y < 0.5 else 0
+        if y == "?":
+            y = 1 if x < 0.5 else 0
+        return abs(x - y)
+    
+    def bin(self, x):
+        if self.hi == self.lo:
+            return 1
+        tmp = (self.hi - self.lo) / (the.bins - 1)
+        return math.floor(x / tmp + .5) * tmp

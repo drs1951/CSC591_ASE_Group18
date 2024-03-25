@@ -1,8 +1,10 @@
 from col import COLS
 from row import ROW
 import re,ast,fileinput
+from hw5.config import *
+from l import *
+from node import *
 import random
-from hw6.config import *
 
 def coerce(s):
   try: return ast.literal_eval(s)
@@ -39,103 +41,85 @@ class DATA:
 
         self.rows.append(row)
 
-    def mid(self, cols=None, hw6=True):
+    def mid(self, cols=None, hw4=True):
         # Calculate the mid (mean/mode) of the specified columns
         u = {}
         ans = []
         target_cols = {**self.cols.x, **self.cols.y} if cols is None else cols
-        if hw6:
+        if hw4:
             for _,col in target_cols.items():
                 ans.append(col.mid())
             ans.insert(2, 0)
-            # print(ROW(ans).cells)
             return ROW(ans)
+            
         u[".N"] = len(self.rows)-1
         for _,col in target_cols.items():
             u[col.txt] = col.mid()
         return ROW(u)
-
-    def gate(self, budget0, budget, some, ans):
-        rows = random.sample(self.rows[1:], len(self.rows)-1)
-        ans[0].append("1. top 6 \n " + str([top_6.cells[5:8] for top_6 in rows[:6]]))
-        ans[1].append("2. top 50 \n " + str([top_50.cells[5:8] for top_50 in rows[:50]]))
-        rows.sort(key=lambda x: x.d2h(self))
-        ans[2].append("3. most \n " + str(rows[0].cells[5:8]))
-        rows = random.sample(self.rows[1:], len(self.rows)-1)
-        lite = rows[:budget0]
-        dark = rows[budget0:]
-        stats = []
-        bests = []
-
-        for i in range(budget):
-            best, rest = self.best_rest(lite, len(lite) ** some)
-            todo, selected = self.split(best, rest, lite, dark)
-            
-            # print("4: rand", y values of centroid of (from DARK, select BUDGET0+i rows at random))
-            ans[3].append("4: rand \n " + str(self.get_centroid(random.sample(dark,budget0+i), 5, 8)))
-            ans[4].append("5: mid \n " + str(self.get_centroid(selected.rows[1:], 5, 8)))
-            ans[5].append("6: top: \n " + str(best.rows[1].cells[5:8]))
-            stats.append(selected.mid())
-            bests.append(best.rows[1])
-            lite.append(dark.pop(todo))
-        
-        return stats, bests
     
-    def smo9(self,budget0, budget, some):
-      stats = []
-      bests = []
-      rows = self.rows[1:]
-      random_seeds = random.sample(range(100),20)
-      for i in range(budget0):
-        # random.seed(20*i)
-        the.seed = random_seeds[i]
-        random.shuffle(rows)
-        lite = rows[0:budget0]
-        dark = rows[budget0:]
-        # print(the.seed)
-        for i in range(budget):
-          best, rest = self.best_rest(lite, len(lite) ** some)
-          todo, selected = self.split(best, rest, lite, dark)
-          
-          stats.append(selected.mid())
-          bests.append(best.rows[0])
-          lite.append(dark.pop(todo))
-          print(f"smo{budget+budget0}:\t\t {best.rows[1].cells} \t {round(best.rows[1].d2h(self),2)}")
-      return stats, bests
+    def clone(self, rows=None):
+        new_data = DATA([self.cols.names])
+        for row in (rows or []):
+            new_data.add(row)
+        return new_data
+    
+    def farapart(self, rows, sortp=False, a=None):
+        far = int((len(rows)-1) * the.Far)
+        evals = 1 if a else 2
+        a = any_item(rows)
+        a_neighbors = sorted(a.neighbors(self), key=lambda row: row.d2h(self))
+        b = a_neighbors[far]
 
-    def split(self, best, rest, lite, dark):
-        selected = DATA([self.cols.names])
-        max_val = 1E30
-        out = 1
+        if sortp and b.d2h(self) < a.d2h(self):
+            a, b = b, a
 
-        for i, row in enumerate(dark):
-            b = row.like(best, len(lite), 2)
-            r = row.like(rest, len(lite), 2)
-            if b > r:
-                selected.add(row)
-            tmp = abs(b + r) / abs(b - r + 1E-300)
-            if tmp > max_val:
-                out, max_val = i, tmp
-        
-        return out, selected
+        return a, b, a.dist(b, self), evals
+    
+    def half(self, rows, sortp=True, before=None):
+        some = random.sample(rows, min(the.Half, len(rows)))
+        a, b, C, evals = self.farapart(some, sortp, before)
+        as_ = []
+        bs = []
 
-    def best_rest(self, rows, want):
-        rows.sort(key=lambda x: x.d2h(self))
-        best = [self.cols.names]
-        rest = [self.cols.names]
+        def project(r):
+            return (r.dist(a, self) ** 2 + C ** 2 - r.dist(b, self) ** 2) / (2 * C)
+        rows = rows[1:]
+        sorted_rows = sorted(rows, key=project)
+        midpoint = len(rows) // 2
+        as_, bs = sorted_rows[:midpoint], sorted_rows[midpoint:]
 
-        for i, row in enumerate(rows):
-            (best if i < want else rest).append(row.cells)
-        # print(best,rest)
-        return DATA(best), DATA(rest)
-      
-    def get_centroid(self, rows, i, j):
-      centroid = []
-      for k in range(i,j):
-        centroid.append(0)
-      for row in rows:
-        y = row.cells[i:j]
-        centroid = [sum(k) for k in zip(y, centroid)]
-      for k in range(len(centroid)):
-        centroid[k]/=len(rows)
-      return centroid
+        return as_, bs, a, b, C, a.dist(bs[0], self), evals
+
+    def tree(self, sortp=True):
+        evals = 0
+
+        def _tree(data, above=None):
+            nonlocal evals
+            node = NODE(data)
+            if len(data.rows) > 2 * math.sqrt(len(self.rows)):
+                lefts, rights, node.left, node.right, node.C, node.cut, evals1 = data.half(data.rows, sortp, above)
+                evals += evals1
+                node.lefts = _tree(data.clone(lefts))
+                node.rights = _tree(data.clone(rights))
+            return node
+
+        root = _tree(self)
+        return root, evals
+
+    def branch(self, stop=None):
+        evals = 1
+        rest = []
+
+        stop = stop or (2 * len(self.rows) ** 0.5)
+
+        def _branch(data, above=None, left=None, lefts=None, rights=None):
+            nonlocal evals
+            if len(data.rows) > stop:
+                lefts, rights, left, b, C, dis_a_to_bs, _ = data.half(data.rows[1:], True, above)
+                evals += 1
+                rest.extend(rights)
+                return _branch(data.clone(lefts), left)
+            else:
+                return data.clone(data.rows[1:]), data.clone(rest), evals
+
+        return _branch(self)

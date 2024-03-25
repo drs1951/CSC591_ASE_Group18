@@ -1,45 +1,29 @@
-import sys
-sys.path.append("../CSC591_ASE_Group18/")
-from hw6.config import *
-import math 
+from hw7.config import *
 
 class ROW:
     def __init__(self, cells):
         self.cells = cells
 
-    def like(self, data, n, n_hypotheses):
-        prior = (len(data.rows) + the["k"]) / (n + the["k"] * n_hypotheses)
-        out = math.log(prior)
+    def d2h(self, data, p=2):
+        d, n = 0, 0
+        for col in data.cols.y.values():
+            x = self.cells[col.at]
+            if x is None:
+                print("?", end="")
+            else:
+                n += 1
+                d += abs(col.heaven - col.norm(self.cells[col.at])) ** p
+        return (d / n) ** (1 / p) if n > 0 else 0
+
+    def dist(self, other, data, p=None):
+        if p is None:
+            p = the.p 
+        d, n = 0, 0
         for col in data.cols.x.values():
-            v = self.cells[col.at]
-            if v != "?":
-                inc = col.like(v, prior)
-                if inc!=0:
-                  out += math.log(inc)
-        return math.exp(out)
-    
-    def likes(self, datas):
-        n, n_hypotheses = 0, 0
-
-        for data in datas:
-            n += len(datas[data].rows)
-            n_hypotheses += 1
-
-        most, out = None, None
-
-        for k, data in datas.items():
-            tmp = self.like(datas[k], n, n_hypotheses)
-            if most is None or tmp > most:
-                most, out = tmp, k
-        return out, most
-    
-    def d2h(self, data):
-        d = 0
-        n = 0
-        # print(self.cells)
-        for col_name,col in data.cols.y.items():
-            # print(type(col_name))
             n += 1
-            # d+= abs(col.heaven - col.norm(self.cells[data.cols.names[col_name]])) ** 2
-            d += math.pow(math.fabs(data.cols.y[col_name].heaven - data.cols.y[col_name].norm(self.cells[col_name])), 2)
-        return math.sqrt(d / n) if n > 0 else 0
+            d += col.dist(self.cells[col.at], other.cells[col.at]) ** p
+        return (d / n) ** (1 / p) if n > 0 else 0
+
+    def neighbors(self, data, rows=None):
+        rows = rows if rows is not None else data.rows[1:]
+        return sorted(rows, key=lambda row: self.dist(row, data))
