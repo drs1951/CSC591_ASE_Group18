@@ -21,3 +21,6 @@ class SYM:
         if x == "?" and y == "?":
             return 1
         return 0 if x == y else 1
+    
+    def bin(self,x):
+        return x

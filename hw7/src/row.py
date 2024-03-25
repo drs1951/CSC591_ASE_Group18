@@ -1,4 +1,4 @@
-from hw5.config import *
+from hw7.config import *
 
 class ROW:
     def __init__(self, cells):
@@ -16,15 +16,11 @@ class ROW:
         return (d / n) ** (1 / p) if n > 0 else 0
 
     def dist(self, other, data, p=None):
-        # print(other.cells)
         if p is None:
             p = the.p 
         d, n = 0, 0
         for col in data.cols.x.values():
             n += 1
-            # print(col)
-            # print(self.cells)
-            # print("__________")
             d += col.dist(self.cells[col.at], other.cells[col.at]) ** p
         return (d / n) ** (1 / p) if n > 0 else 0
 

@@ -20,7 +20,7 @@ OPTIONS:
   -r --rest   |rest| is |best|*rest        = 3
   -T --Top    max. good cuts to explore   = 10 
   -H --Half   #items to use in clustering     = 256
-  -S --Support coeffecient on best            = 2
+  -S --support coeffecient on best            = 2
 """
 
 """

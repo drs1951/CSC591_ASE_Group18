@@ -24,8 +24,7 @@
 #             return self.fmt("%s == %s", s, lo)
 #         return self.fmt("%s <= %s < %s", lo, s, hi)
 
-#     def score(self, goal, LIKE, HATE):
-#         return self.score(self.y, goal, LIKE, HATE)
+#     
 
 #     def merge(self, other):
 #         both = RANGE(self.at, self.txt, self.x['lo'])
@@ -58,6 +57,7 @@ class Range:
         self.y = {}
 
     def add(self, x, y):
+        
         self.x['lo'] = min(self.x['lo'], x)
         self.x['hi'] = max(self.x['hi'], x)
         self.y[y] = self.y.get(y, 0) + 1
@@ -75,7 +75,9 @@ class Range:
     def merge(self, other):
         both = Range(self.at, self.txt, min(self.x['lo'], other.x['lo']))
         both.x['hi'] = max(self.x['hi'], other.x['hi'])
-        for k, v in {**self.y, **other.y}.items():
+        for k, v in self.y.items():
+            both.y[k] = v
+        for k, v in other.y.items():
             both.y[k] = both.y.get(k, 0) + v
         return both
 
@@ -88,16 +90,19 @@ class Range:
         if l.entropy(both.y)[0] <= (n1 * e1 + n2 * e2) / (n1 + n2):
             return both
         
-def _ranges(cols, rowss):
-    t = []
-    for col in cols:
-        for range in _ranges1(col, rowss):
-            t.append(range)
-    return t
+    def custom_print(self):
+        print("{" +
+              f"at: {self.at}, " +
+              f"scored: {self.scored}, " +
+              f"txt: {self.txt}, " +
+              f"x: {{hi: {self.x['hi']}, lo: {self.x['lo']}}}, " +
+              f"y: {self.y}" +
+              "}")
 
-def _ranges1(col, rowss):
+def ranges1(col, rowss):
     out, nrows = {}, 0
     for y, rows in rowss.items():
+        rows=rows[1:]
         nrows += len(rows)
         for row in rows:
             x = row.cells[col.at]
@@ -107,8 +112,11 @@ def _ranges1(col, rowss):
                     out[bin] = Range(col.at, col.txt, x)
                 out[bin].add(x, y)
     out = list(out.values())
-    out.sort(key=lambda a: a.x.lo)
-    return col.has and out or _mergeds(out, nrows / the.bins)
+    out.sort(key=lambda a: a.x['lo'])
+    if hasattr(col,'has'):
+        return out
+    else:
+        return _mergeds(out, nrows / the.bins)
 
 def _mergeds(ranges, tooFew):
     i, t = 0, []
@@ -124,16 +132,7 @@ def _mergeds(ranges, tooFew):
     if len(t) < len(ranges):
         return _mergeds(t, tooFew)
     for i in range(1, len(t)):
-        t[i].x.lo = t[i - 1].x.hi
-    t[0].x.lo = float('-inf')
-    t[-1].x.hi = float('inf')
+        t[i].x['lo'] = t[i - 1].x['hi']
+    t[0].x['lo'] = float('-inf')
+    t[-1].x['hi'] = float('inf')
     return t
-
-
-
-
-
-
-# Implement _ranges, _ranges1, _mergeds as functions
-# These would utilize the Range class and manage the process of finding and merging ranges
-

@@ -48,5 +48,5 @@ def entropy(t):
     e = 0  # Entropy
     for v in t.values():
         p = v / n  # Probability of each item
-        e += -p * math.log(p, 2)  # Accumulate entropy
+        e = e - p * math.log(p, 2)  # Accumulate entropy
     return e, n

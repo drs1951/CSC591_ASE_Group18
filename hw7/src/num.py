@@ -1,3 +1,4 @@
+from hw7.config import *
 import math
 
 class NUM:
@@ -40,3 +41,9 @@ class NUM:
         if y == "?":
             y = 1 if x < 0.5 else 0
         return abs(x - y)
+    
+    def bin(self, x):
+        if self.hi == self.lo:
+            return 1
+        tmp = (self.hi - self.lo) / (the.bins - 1)
+        return math.floor(x / tmp + .5) * tmp

@@ -39,45 +39,46 @@ def eg_doubletap():
     print(evals1 + evals2)
 
 def score_range(range_obj, like_count, hate_count):
-    """Calculates the score of a range based on 'LIKE' and 'HATE' counts."""
-    return range_obj.score_range("LIKE", like_count, hate_count)
+    return range_obj.score("LIKE", like_count, hate_count)
 
 def eg_bins():
     d = DATA("data/auto93.csv")
     best, rest, _ = d.branch()
-    like = best.rows # Assuming these are defined somewhere
-    hate = rest.rows[:3 * len(like)] # Simplified for illustration
+    like = best.rows
+    hate = rest.rows[:3 * len(like)] 
 
     ranges = []
-    for col in d.cols['x']:
-        # Assuming _ranges1 function exists and is adjusted for Python
-        for range_obj in range._ranges1(col, {'LIKE': like, 'HATE': hate}):
-            print(range_obj)
-            ranges.append(range_obj)
 
+    print("\nOutput 1:\n")
+    for col in d.cols.x.values():
+        for range_obj in ranges1(col, {'LIKE': like, 'HATE': hate}):
+            range_obj.custom_print()
+            ranges.append(range_obj)
     ranges.sort(key=lambda x: score_range(x, len(like), len(hate)), reverse=True)
     max_score = score_range(ranges[0], len(like), len(hate))
 
+    print("\nOutput 2:\n")
     print("\n#scores:\n")
     for v in ranges:
         current_score = score_range(v, len(like), len(hate))
         if current_score > 0.1 * max_score:
-            print(f"{current_score:.2f}, {v}")
+            print(f"{current_score:.2f} ", end=' ')
+            v.custom_print()
 
     print({'LIKE': len(like), 'HATE': len(hate)})
 
-# You'll need to define or adjust Data.branch, _ranges1, and the scoring logic as per your needs.
 
 def run_tests(d):
+    print("Cluster Output")
+    eg_tree()
+    print("\nOptimization Output")
+    print("\nSingle Descent Output")
+    eg_branch()
+    print("\nDouble Tap Output")
+    eg_doubletap()
+    eg_dist()
+    print()
+    print("Output of Far function")
+    eg_far()
+    print("Output of Bin function")
     eg_bins()
-    # print("Cluster Output")
-    # eg_tree()
-    # print("\nOptimization Output")
-    # print("\nSingle Descent Output")
-    # eg_branch()
-    # print("\nDouble Tap Output")
-    # eg_doubletap()
-    # eg_dist()
-    # print()
-    # print("Output of Far function")
-    # eg_far()
