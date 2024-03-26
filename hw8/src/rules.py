@@ -22,12 +22,11 @@ class RULES:
                 self.HATE += len(rows)
 
     def score(self, t):
-        score(t, self.goal, self.LIKE, self.HATE)
-        pass
+        return score(t, self.goal, self.LIKE, self.HATE)
 
     def try_(self, ranges):
         u = []
-        for subset in powerset(ranges):  # Assuming powerset function is defined elsewhere
+        for subset in powerset(ranges):  
             if subset:
                 rule = RULE(subset)
                 rule.scored = self.score(rule.selectss(self.rowss))

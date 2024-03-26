@@ -25,6 +25,7 @@ class RULE:
 
     def selects(self, rows):
         t = []
+        rows=rows[1:]
         for r in rows:
             if self._and(r):
                 t.append(r)
