@@ -1,1 +1,14 @@
-WIP
+
+score 			        mid selected 					                   rules
+_____ 	 __________________________________________________ 	 __________________
+
+0.56 	 [4.45, 136.58, 0, 80.98, 1, 2583.25, 16.86, 31.25]  	Model >= 80
+0.56 	 [4.6, 113.6, 0, 80.2, 3, 2348.4, 15.94, 35.0]  	    Model >= 80 and origin == 3
+0.48 	 [4.19, 103.63, 0, 75.89, 3, 2230.22, 16.27, 28.7]  	origin == 3
+0.33 	 [4.0, 87.12, 0, 80.13, 3, 2042.12, 18.92, 41.25]  	    Model >= 80 and 79 <= Volume < 91
+0.33 	 [4.0, 86.5, 0, 80.0, 3, 2051.75, 18.07, 42.5]  	    Model >= 80 and 79 <= Volume < 91 and origin == 3
+0.24 	 [3.97, 85.73, 0, 76.9, 2, 2040.07, 17.37, 33.33]  	    79 <= Volume < 91
+0.24 	 [3.92, 84.5, 0, 77.83, 3, 2073.33, 17.55, 34.17]  	    79 <= Volume < 91 and origin == 3
+
+
+The observed explanation tax highlights the trade-off between simplicity and completeness in explanations. Simplifying complex data into concise rules misses out on nuanced details. For instance, rules like "Model >= 80" have a higher score, while complex rules like "Model >= 80 and 79 <= Volume < 91 and origin == 3" have a lower score. Thus, while explanations aim to clarify data, they may not fully capture its complexity, resulting in an "explanation tax" where simplification incurs a loss of detailed insights.

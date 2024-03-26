@@ -76,20 +76,24 @@ def eg_rules():
         
         best0, rest, evals1 = d.branch(the.d)
         best, _, evals2 = best0.branch(the.D)
-        print(evals1 + evals2 + the.D - 1)
+        # print(f"Evals: {evals1 + evals2 + the.D - 1}")
         
         LIKE = best.rows
         HATE = slice(shuffle(rest.rows), 1, 3 * len(LIKE))  
         rowss = {"LIKE": LIKE, "HATE": HATE}
-        
+        print()
+        print("score", "\t\t\t" ,"mid selected", "\t\t\t\t\t", "rules")
+        print("_____", "\t" ,"__________________________________________________", "\t", "__________________")
+        print()
         for i, rule in enumerate(RULES(ranges(d.cols.x, rowss), "LIKE", rowss).sorted):
             result = d.clone(rule.selects(rest.rows))
+            result.rows = result.rows[1:]
             if len(result.rows) > 0:
                 result.rows.sort(key=lambda a: a.d2h(d))  
-                print(l.rnd(rule.scored), 
-                      l.rnd(result.mid().d2h(d)), 
-                      l.rnd(result.rows[0].d2h(d)),
-                      l.o(result.mid().cells), 
+                print(l.rnd(rule.scored), "\t",
+                    #   l.rnd(result.mid().d2h(d)), 
+                    #   l.rnd(result.rows[0].d2h(d)),
+                      l.o(result.mid()),
                       "\t", rule.show())  
 
 

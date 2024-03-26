@@ -1,6 +1,7 @@
 import random
 import math
 from hw8.config import *
+from row import *
 
 def any_item(lst):
     return random.choice(lst)
@@ -8,8 +9,10 @@ def any_item(lst):
 def o(t, ndecs=None):
     if isinstance(t, float):
         return rnd(t, ndecs)
-    if not isinstance(t, dict):
-        return str(t.cells)
+    if isinstance(t, ROW):
+        return str(t.cells) + " "
+    if not isinstance(t, dict) and not isinstance(t, list):
+        return str(t)
     u = []
     for k in t:
         if not str(k).startswith("_"):
@@ -17,7 +20,6 @@ def o(t, ndecs=None):
                 u.append(o(t[k], ndecs))
             else:
                 u.append("{}: {}".format(o(k, ndecs), o(t[k], ndecs)))
-    print(u)
     return "{" + ", ".join(u) + "}"
 
 def rnd(n, ndecs=2):
@@ -60,6 +62,7 @@ def slice(t, start, stop=None, step=1):
 
 
 def shuffle(t):
+    t=t[1:]
     u = t[:]  
     random.shuffle(u)
     return u
@@ -67,13 +70,20 @@ def shuffle(t):
 def score(t, goal, LIKE, HATE):
     like = hate = 0
     tiny = 1E-30
+    # print(t)
     for klass, n in t.items():
         if klass == goal:
             like += n
         else:
             hate += n
     like, hate = like / (LIKE + tiny), hate / (HATE + tiny)
-    if hate > like:
+    if hate >= like:
         return 0
     else:
         return like ** the.support / (like + hate)
+    
+def powerset(s):
+    t = [[]]
+    for item in s:
+        t += [subset + [item] for subset in t]
+    return t
