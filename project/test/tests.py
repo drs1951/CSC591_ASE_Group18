@@ -1,10 +1,11 @@
-from hw8.src.data import *
-from hw8.config import *
-from hw8.src import l
-from hw8.src.range import *
-from hw8.src.rule import *
-from hw8.src.rules import *
-import random
+import sys
+sys.path.append("../CSC591_ASE_HW_Group12/")
+from project.src.data import *
+from project.config import *
+from project.src import l
+from project.src.range import *
+from project.src.rule import *
+from project.src.rules import *
 
 def eg_dist():
     d = DATA(src="data/auto93.csv")

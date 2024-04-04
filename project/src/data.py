@@ -1,7 +1,7 @@
 from col import COLS
 from row import ROW
 import re,ast,fileinput
-from hw5.config import *
+from project.config import *
 from l import *
 from node import *
 import random

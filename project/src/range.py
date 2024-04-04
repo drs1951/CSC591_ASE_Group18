@@ -1,6 +1,6 @@
 import math
 import l
-from hw8.config import *
+from project.config import *
 
 class Range:
     def __init__(self, at, txt, lo, hi=None):

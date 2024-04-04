@@ -1,5 +1,5 @@
 from rule import *
-from hw8.config import *
+from project.config import *
 from l import *
 
 class RULES:

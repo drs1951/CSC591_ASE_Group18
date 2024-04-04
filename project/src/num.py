@@ -1,4 +1,4 @@
-from hw8.config import *
+from project.config import *
 import math
 
 class NUM:

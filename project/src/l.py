@@ -1,6 +1,6 @@
 import random
 import math
-from hw8.config import *
+from project.config import *
 from row import *
 
 def any_item(lst):

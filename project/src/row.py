@@ -1,4 +1,4 @@
-from hw8.config import *
+from project.config import *
 
 class ROW:
     def __init__(self, cells):
