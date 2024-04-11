@@ -75,15 +75,27 @@ def soybean():
 def eg_gate20():
     print("#best, mid")
     ans = [[],[],[],[],[],[]]
+    over_all_mean = 0
     for i in range(20):
         the.seed = i*10
         d = DATA(src="data/auto93.csv")
         stats, bests = d.gate(4, 16, 0.5, ans)
-        stat, best = stats[-1], bests[-1]
+        for best in bests:
+          print(best.cells)
+        break
+
+        mean_d2h = 0
+        for best in bests:
+          mean_d2h+=best.d2h(d)
+        mean_d2h /= len(bests)
+        over_all_mean+=mean_d2h
+    return over_all_mean
+
+        # stat, best = stats[-1], bests[-1]
         # print(bests[-1].cells)
         # print(stats[-1].cells)
-        print (round(best.d2h(d),2), round(stat.d2h(d),2))
-    return ans
+        # print (round(best.d2h(d),2), round(stat.d2h(d),2))
+    # return ans
 
 def eg_test_d2h():
   d = DATA(src="data/auto93.csv")
@@ -158,10 +170,11 @@ def run_tests(test_name):
      print(eg_csv())
   elif (test_name=='eg_gate20'):
      ans = eg_gate20()
-     for i in ans:
-       for j in i:
-         print(j)
-         print()
+     print(ans)
+    #  for i in ans:
+    #    for j in i:
+    #      print(j)
+    #      print()
   elif (test_name == 'eg_test_d2h'):
      eg_test_d2h()
      
