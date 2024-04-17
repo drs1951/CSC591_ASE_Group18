@@ -1,7 +1,11 @@
+import sys
+sys.path.append('/project_smo/src')
 from col import COLS
 from row import ROW
 import re,ast,fileinput
 import random
+import os 
+print(os.getcwd())
 
 def coerce(s):
   try: return ast.literal_eval(s)
@@ -53,15 +57,10 @@ class DATA:
         for _,col in target_cols.items():
             u[col.txt] = col.mid()
         return ROW(u)
-
-    def gate(self, budget0, budget, some, ans):
+        
+    def gate(self, budget0, budget, some):
         rows = self.rows[1:]
         rows = random.sample(rows, len(rows))
-        # ans[0].append("1. top 6 \n " + str([top_6.cells[5:8] for top_6 in rows[:6]]))
-        # ans[1].append("2. top 50 \n " + str([top_50.cells[5:8] for top_50 in rows[:50]]))
-        # rows.sort(key=lambda x: x.d2h(self))
-        # ans[2].append("3. most \n " + str(rows[0].cells[5:8]))
-        # rows = random.sample(self.rows[1:], len(self.rows)-1)
         lite = rows[:budget0]
         dark = rows[budget0:]
         stats = []
@@ -69,11 +68,6 @@ class DATA:
         for i in range(budget):
             best, rest = self.best_rest(lite, len(lite) ** some)
             todo, selected = self.split(best, rest, lite, dark)
-            
-            # print("4: rand", y values of centroid of (from DARK, select BUDGET0+i rows at random))
-            # ans[3].append("4: rand \n " + str(self.get_centroid(random.sample(dark,budget0+i), 5, 8)))
-            # ans[4].append("5: mid \n " + str(self.get_centroid(selected.rows[1:], 5, 8)))
-            # ans[5].append("6: top: \n " + str(best.rows[1].cells[5:8]))
             stats.append(selected.mid())
             bests.append(best.rows[1])
             lite.append(dark.pop(todo))

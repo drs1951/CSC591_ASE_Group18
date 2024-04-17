@@ -72,21 +72,42 @@ def soybean():
                 best_m = m
   return best_acc,best_k,best_m
 
-def project_smo():
+def d2h_info(lite, data):
+  summ = 0
+  maxi = 0
+  mini = 1
+  n = 0
+  # data.rows = data.rows[1:]
+  for row in lite:
+      n+=1
+      dis = row.d2h(data)
+      summ += dis
+      maxi = max(maxi, dis)
+      mini = min(mini, dis)
+#   print(n)
+#   print("n")
+  return {'mean': summ/n, 'min': mini, 'max': maxi}
+
+def run_smo(budget0, budget, data_path):
     # print("#best, mid")
-    ans = [[],[],[],[],[],[]]
-    lite_list = []
-    for i in range(1):
+    best_lite = []
+    min_score = float('inf')
+    for i in range(20):
         the.seed = i*10
-        d = DATA(src="data/auto93.csv")
+        d = DATA(src=data_path)
         # budget = int(2 * len(d.rows) ** 0.5)
-        stats, bests, lite = d.gate(4, 394, 0.5, ans)
+        stats, bests, lite = d.gate(budget0, budget, 0.5)
         stat, best = stats[-1], bests[-1]
-        lite_list.append(lite)
+        info = d2h_info(lite, d)
+
+        if info['min'] < min_score:
+          best_lite = lite
+          min_score = info['min']
         # print(bests[-1].cells)
         # print(stats[-1].cells)
         # print(round(best.d2h(d),2), round(stat.d2h(d),2))
-    return lite_list
+    return best_lite
+
 
 def eg_gate20():
     print("#best, mid")
@@ -170,47 +191,32 @@ def d2h():
       minV = min(minV, row.d2h(d))
    print(minV)
 
-def d2h_info(lite, data):
-  summ = 0
-  maxi = 0
-  mini = 1
-  n = 0
-  # data.rows = data.rows[1:]
-  for row in lite:
-      n+=1
-      dis = row.d2h(data)
-      summ += dis
-      maxi = max(maxi, dis)
-      mini = min(mini, dis)
-  print(n)
-  print("n")
-  return {'mean': summ/n, 'min': mini, 'max': maxi}
-
 def run_tests(test_name):
-  print(test_name)
-  if (test_name=='all'):
-    run_all_tests()
-  elif (test_name=='sym'):
-    print(eg_sym_mid())
-  elif (test_name=='num'):
-     print(eg_num_mid())
-  elif (test_name=='csv'):
-     print(eg_csv())
-  elif (test_name=='naive_bayes'):
-     print(eg_csv())
-  elif (test_name=='eg_gate20'):
-     ans = eg_gate20()
-     for i in ans:
-       for j in i:
-         print(j)
-         print()
-  elif (test_name=='project_smo'):
-     lite = project_smo()
+  # print(test_name)
+  # if (test_name=='all'):
+  #   run_all_tests()
+  # elif (test_name=='sym'):
+  #   print(eg_sym_mid())
+  # elif (test_name=='num'):
+  #    print(eg_num_mid())
+  # elif (test_name=='csv'):
+  #    print(eg_csv())
+  # elif (test_name=='naive_bayes'):
+  #    print(eg_csv())
+  # elif (test_name=='eg_gate20'):
+  #    ans = eg_gate20()
+  #    for i in ans:
+  #      for j in i:
+  #        print(j)
+  #        print()
+  if (test_name=='project_smo'):
+     best_lite = run_smo(4, 394, "data/auto93.csv") #best result after 20 runs of smo
      d = DATA(src="data/auto93.csv")
-     for l in lite:
-      print(d2h_info(l, d))
-  elif (test_name == 'eg_test_d2h'):
-     eg_test_d2h()
-  elif (test_name == 'd2h'):
-     d2h()
+     print(d2h_info(best_lite, d))
+    #  for l in lite:
+    #   print(d2h_info(l, d))
+  # elif (test_name == 'eg_test_d2h'):
+  #    eg_test_d2h()
+  # elif (test_name == 'd2h'):
+  #    d2h()
 

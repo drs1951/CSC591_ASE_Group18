@@ -12,9 +12,9 @@ class NODE:
     def walk(self, fun, depth=0):
         # fun(self, depth, not (self.lefts or self.rights))
         if self.lefts:
-            self.lefts.walk(fun, depth + 1)
+            return self.lefts.walk(fun, depth + 1)
         else:
-            fun(self, depth, not (self.lefts or self.rights))
+            return fun(self, depth, not (self.lefts or self.rights))
         # if self.rights:
         #     self.rights.walk(fun, depth + 1)
 
@@ -25,7 +25,7 @@ class NODE:
             maxi = 0
             mini = 1
             n = 0
-            data.rows = data.rows[1:]
+            # data.rows = data.rows[1:] ek change
             data.rows.sort(key=lambda x: x.d2h(data))
             data.rows = data.rows[:stop]
             for row in data.rows:
@@ -35,23 +35,24 @@ class NODE:
                 maxi = max(maxi, dis)
                 mini = min(mini, dis)
 
-            print(n)
-            print("n")
+            # print(n)
+            # print("n")
             
-            return {'mean': summ/n, 'min': mini, 'max': maxi}
+            return {'mean': summ/n, 'min': mini, 'max': maxi}, data
 
         def _show(node, depth, is_leaf):
             post = ""
             if is_leaf:
                 # d2h_value = rnd(node.here.mid().d2h(self.here))
-                post = f"\t{str(node.here.mid().cells)} 890"
-                print(d2h_info(node.here))
-                print("D@H")
+                post = f"\t{str(node.here.mid().cells)}"
+                # print(d2h_info(node.here))
+                # print("D@H")
+                return d2h_info(node.here)
             nonlocal max_depth
             max_depth = max(max_depth, depth)
-            print('|.. ' * depth + post)
+            # print('|.. ' * depth + post)
 
-        self.walk(_show)
-        print("")
-        print("    " * max_depth, str(self.here.mid().cells))
-        print("    " * max_depth, "_", str(self.here.cols.names))
+        # print("")
+        # print("    " * max_depth, str(self.here.mid().cells))
+        # print("    " * max_depth, "_", str(self.here.cols.names))
+        return self.walk(_show)

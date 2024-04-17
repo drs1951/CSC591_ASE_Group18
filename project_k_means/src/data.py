@@ -132,14 +132,17 @@ class DATA:
         return _branch(self)
 
 
-    def k_means(self,k, stop):
+    def k_means(self,k, stop,kmeans_plus):
         for row in self.rows[1:]:
             for index,vl in enumerate(row.cells):
                 if vl == '?':
                     row.cells[index] = self.cols.all[index].mid()
 
         X = np.array([np.array(row.cells) for row in self.rows[1:]])
-        kmeans = KMeans(n_clusters = k, n_init = 100).fit(X)
+        if kmeans_plus:
+            kmeans = KMeans(n_clusters = k,init = 'k-means++', n_init = 100).fit(X)
+        else:
+            kmeans = KMeans(n_clusters = k, n_init = 100).fit(X)
         centroids =  [ROW(cluster).d2h(self) for cluster in kmeans.cluster_centers_]
         
         sorted_centroids = sorted(centroids)

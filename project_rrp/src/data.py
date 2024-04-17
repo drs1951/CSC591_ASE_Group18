@@ -1,3 +1,5 @@
+# import sys
+# sys.path.append("../CSC591_ASE_HW_Group12/")
 from col import COLS
 from row import ROW
 import re,ast,fileinput
@@ -28,6 +30,7 @@ class DATA:
         else:
             for row in (src or []):
                 self.add(ROW(row), fun)
+        
 
     def add(self, row, fun=None):
 
@@ -39,7 +42,7 @@ class DATA:
 
             self.cols.add(row)
 
-        self.rows.append(row)
+            self.rows.append(row) # ek change
 
     def mid(self, cols=None, hw4=True):
         # Calculate the mid (mean/mode) of the specified columns
@@ -82,8 +85,9 @@ class DATA:
         bs = []
 
         def project(r):
-            return (r.dist(a, self) ** 2 + C ** 2 - r.dist(b, self) ** 2) / (2 * C)
-        rows = rows[1:]
+            return (r.dist(a, self) ** 2 + C ** 2 - r.dist(b, self) ** 2) / (2 * C+0.00000001)
+        # rows = rows[1:]
+        # ek change comment
         sorted_rows = sorted(rows, key=project)
         midpoint = len(rows) // 2
         as_, bs = sorted_rows[:midpoint], sorted_rows[midpoint:]
@@ -117,11 +121,12 @@ class DATA:
         def _branch(data, above=None, left=None, lefts=None, rights=None):
             nonlocal evals
             if len(data.rows) > stop:
-                lefts, rights, left, b, C, dis_a_to_bs, _ = data.half(data.rows[1:], True, above)
+                lefts, rights, left, b, C, dis_a_to_bs, _ = data.half(data.rows, True, above)
                 evals += 1
                 rest.extend(rights)
                 return _branch(data.clone(lefts), left)
             else:
-                return data.clone(data.rows[1:]), data.clone(rest), evals
+                return data.clone(data.rows), data.clone(rest), evals
+                # return data.clone(data.rows[1:]), data.clone(rest), evals ek change
 
         return _branch(self)

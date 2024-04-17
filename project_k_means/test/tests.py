@@ -72,12 +72,13 @@ def eg_bins():
             v.custom_print()
 
     print({'LIKE': len(like), 'HATE': len(hate)})
-def eg_k_means(budget=32):
-    d = DATA("data/auto93.csv")
+def run_k_means(data, budget=32, k_means_plus = False):
+    # d = DATA("data/auto93.csv")
+    d= DATA(data)
     l = len(d.rows)
     stop = budget
     k= l//stop
-    clusters = d.k_means(k,budget)
+    clusters = d.k_means(k,budget, k_means_plus)
     # print("Min d2h cluster label")
     # print(clusters.index(min(clusters)))
    
@@ -136,7 +137,7 @@ def eg_rules():
 def run_tests(d):
     # print("Cluster Output")
     # eg_tree()
-    eg_k_means(398)
+    run_k_means("data/auto93.csv",12,True)
     # print("\nOptimization Output")
     # print("\nSingle Descent Output")
     # eg_branch()

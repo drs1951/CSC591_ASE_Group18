@@ -24,11 +24,11 @@ def eg_far():
     print(l.o(b))
     print(C)
 
-def eg_tree():
-    stop = 398
-    t, evals = DATA("data/auto93.csv").tree(True, stop)
-    t.show(stop)
-    print(f"evals: {evals}")
+def eg_tree(data_path, stop):
+    # stop = 398
+    t, evals = DATA(data_path).tree(True, stop)
+    return t.show(stop)
+    # print(f"evals: {evals}")
 
 
 def eg_branch():
@@ -91,7 +91,8 @@ def eg_rules():
         print()
         for i, rule in enumerate(RULES(ranges(d.cols.x, rowss), "LIKE", rowss).sorted):
             result = d.clone(rule.selects(rest.rows))
-            result.rows = result.rows[1:]
+            # result.rows = result.rows[1:] ek change
+            result.rows = result.rows
             if len(result.rows) > 0:
                 result.rows.sort(key=lambda a: a.d2h(d))  
                 print(l.rnd(rule.scored), "\t",
@@ -100,10 +101,12 @@ def eg_rules():
                       l.o(result.mid()),
                       "\t", rule.show())  
 
+def run_rrp(data_path, stop):
+    return eg_tree(data_path, stop)
 
 def run_tests(d):
     # print("Cluster Output")
-    eg_tree()
+    eg_tree('data/auto93.csv', 20)
     # print("\nOptimization Output")
     # print("\nSingle Descent Output")
     # eg_branch()

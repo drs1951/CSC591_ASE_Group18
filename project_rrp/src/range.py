@@ -63,7 +63,7 @@ def ranges(cols, rowss):
 def ranges1(col, rowss):
     out, nrows = {}, 0
     for y, rows in rowss.items():
-        rows=rows[1:]
+        # rows=rows[1:] ek change
         nrows += len(rows)
         for row in rows:
             x = row.cells[col.at]

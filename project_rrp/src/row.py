@@ -25,5 +25,6 @@ class ROW:
         return (d / n) ** (1 / p) if n > 0 else 0
 
     def neighbors(self, data, rows=None):
-        rows = rows if rows is not None else data.rows[1:]
+        # rows = rows if rows is not None else data.rows[1:] ek change
+        rows = rows if rows is not None else data.rows
         return sorted(rows, key=lambda row: self.dist(row, data))
