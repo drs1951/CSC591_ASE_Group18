@@ -1,11 +1,10 @@
 import sys
-sys.path.append('/project_smo/src')
+sys.path.append('/project_rrp/src')
 from col import COLS
 from row import ROW
 import re,ast,fileinput
 import random
 import os 
-print(os.getcwd())
 
 def coerce(s):
   try: return ast.literal_eval(s)
@@ -72,7 +71,7 @@ class DATA:
             bests.append(best.rows[1])
             lite.append(dark.pop(todo))
         
-        return stats, bests, lite
+        return stats, bests
 
     def split(self, best, rest, lite, dark):
         selected = DATA([self.cols.names])

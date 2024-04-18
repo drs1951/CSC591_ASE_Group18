@@ -1,5 +1,4 @@
 import sys
-sys.path.append("../CSC591_ASE_Group18/")
 from project_smo.config import *
 import math 
 

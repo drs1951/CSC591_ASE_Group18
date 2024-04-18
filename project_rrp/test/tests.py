@@ -1,12 +1,13 @@
 import sys
 sys.path.append("../CSC591_ASE_HW_Group12/")
 from project_rrp.src.data import *
-from project_rrp.config import *
+from project_rrp import config
 from project_rrp.src import l
 from project_rrp.src.range import *
 from project_rrp.src.rule import *
 from project_rrp.src.rules import *
-import numpy as np
+# import numpy as np
+import random
 
 def eg_dist():
     d = DATA(src="data/auto93.csv")
@@ -83,7 +84,7 @@ def eg_rules():
         # print(f"Evals: {evals1 + evals2 + the.D - 1}")
         
         LIKE = best.rows
-        HATE = slice(shuffle(rest.rows), 1, 3 * len(LIKE))  
+        HATE = slice(shuffle(rest.rows), 1, 3 * len(LIKE))
         rowss = {"LIKE": LIKE, "HATE": HATE}
         print()
         print("score", "\t\t\t" ,"mid selected", "\t\t\t\t\t", "rules")
@@ -102,7 +103,13 @@ def eg_rules():
                       "\t", rule.show())  
 
 def run_rrp(data_path, stop):
-    return eg_tree(data_path, stop)
+    # print("in test")
+    # print(config.the)
+    list_d2h = []
+    for i in range(20):
+        random.seed(i*7+49)
+        list_d2h.append(eg_tree(data_path, stop))
+    return list_d2h
 
 def run_tests(d):
     # print("Cluster Output")

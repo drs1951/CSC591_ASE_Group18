@@ -90,23 +90,27 @@ def d2h_info(lite, data):
 
 def run_smo(budget0, budget, data_path):
     # print("#best, mid")
-    best_lite = []
-    min_score = float('inf')
+    # best_lite = []
+    # min_score = float('inf')
+    best_d2h_list = []
     for i in range(20):
         the.seed = i*10
         d = DATA(src=data_path)
         # budget = int(2 * len(d.rows) ** 0.5)
-        stats, bests, lite = d.gate(budget0, budget, 0.5)
+        stats, bests = d.gate(budget0, budget, 0.5)
         stat, best = stats[-1], bests[-1]
-        info = d2h_info(lite, d)
 
-        if info['min'] < min_score:
-          best_lite = lite
-          min_score = info['min']
+        best_d2h = best.d2h(d)
+        best_d2h_list.append(best_d2h)
+
+        # info = d2h_info(lite, d)
+        # if info['min'] < min_score:
+        #   best_lite = lite
+        #   min_score = info['min']
         # print(bests[-1].cells)
         # print(stats[-1].cells)
         # print(round(best.d2h(d),2), round(stat.d2h(d),2))
-    return best_lite
+    return best_d2h_list
 
 
 def eg_gate20():
@@ -210,9 +214,9 @@ def run_tests(test_name):
   #        print(j)
   #        print()
   if (test_name=='project_smo'):
-     best_lite = run_smo(4, 394, "data/auto93.csv") #best result after 20 runs of smo
-     d = DATA(src="data/auto93.csv")
-     print(d2h_info(best_lite, d))
+     best_d2h_list = run_smo(4, 394, "data/auto93.csv") #best result after 20 runs of smo
+     print(best_d2h_list)
+    #  print(d2h_info(best_lite, d))
     #  for l in lite:
     #   print(d2h_info(l, d))
   # elif (test_name == 'eg_test_d2h'):

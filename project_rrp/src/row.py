@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/project_rrp/src')
 from project_rrp.config import *
 
 class ROW:

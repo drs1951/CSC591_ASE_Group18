@@ -1,4 +1,4 @@
-from l import *
+from project_rrp.src.l import *
 
 class NODE:
     def __init__(self, data, lefts=None, rights=None):
@@ -37,8 +37,8 @@ class NODE:
 
             # print(n)
             # print("n")
-            
-            return {'mean': summ/n, 'min': mini, 'max': maxi}, data
+            # print({'mean': summ/n, 'min': mini, 'max': maxi})
+            return data.rows[0].d2h(data)
 
         def _show(node, depth, is_leaf):
             post = ""

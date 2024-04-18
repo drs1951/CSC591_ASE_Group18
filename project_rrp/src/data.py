@@ -1,9 +1,9 @@
-# import sys
-# sys.path.append("../CSC591_ASE_HW_Group12/")
+import sys
+sys.path.append("/project_rrp/src")
 from col import COLS
 from row import ROW
 import re,ast,fileinput
-from project_rrp.config import *
+from project_rrp import config
 from l import *
 from node import *
 import random
@@ -67,7 +67,7 @@ class DATA:
         return new_data
     
     def farapart(self, rows, sortp=False, a=None):
-        far = int((len(rows)-1) * the.Far)
+        far = int((len(rows)-1) * config.the.Far)
         evals = 1 if a else 2
         a = any_item(rows)
         a_neighbors = sorted(a.neighbors(self), key=lambda row: row.d2h(self))
@@ -79,7 +79,9 @@ class DATA:
         return a, b, a.dist(b, self), evals
     
     def half(self, rows, sortp=True, before=None):
-        some = random.sample(rows, min(the.Half, len(rows)))
+        # print(min(the.Half, len(rows)))
+        # print(the)
+        some = random.sample(rows, min(config.the.Half, len(rows)))
         a, b, C, evals = self.farapart(some, sortp, before)
         as_ = []
         bs = []
@@ -96,12 +98,16 @@ class DATA:
 
     def tree(self, sortp=True, stop=0):
         evals = 0
+        # print('c2')
         # self.rows = self.rows[1:]
 
         def _tree(data, stop, above=None):
             nonlocal evals
             node = NODE(data)
             
+            # print('c1')
+            # print(stop)
+            # print(len(data.rows))
             if len(data.rows) > 2 * stop:
                 lefts, rights, node.left, node.right, node.C, node.cut, evals1 = data.half(data.rows, sortp, above)
                 evals += evals1

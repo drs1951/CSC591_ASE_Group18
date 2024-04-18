@@ -1,5 +1,5 @@
 import math
-import l
+from project_rrp.src import l
 from project_rrp.config import *
 
 class Range:
