@@ -1,7 +1,7 @@
 from project_rrp.config import *
 import math
 
-class NUM:
+class NUM2:
     def __init__(self, txt="", at=0):
         self.txt = txt
         self.at = at

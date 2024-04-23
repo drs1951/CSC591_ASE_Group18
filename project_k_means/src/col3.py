@@ -1,7 +1,7 @@
-from num import *
-from sym import *
+from num3 import *
+from sym3 import *
 
-class COLS:
+class COLS3:
     def __init__(self, row_cells):
         self.x = {}
         self.y = {}
@@ -11,7 +11,7 @@ class COLS:
 
         for at, txt in enumerate(row_cells):
 
-            col = NUM(txt, at) if txt[0].isupper() else SYM(txt, at)
+            col = NUM3(txt, at) if txt[0].isupper() else SYM3(txt, at)
             self.all.append(col)
 
             if not txt.endswith("X"):

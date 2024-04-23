@@ -1,5 +1,6 @@
 import sys
 import random
+import time
 from project_smo.src.num import *
 from project_smo.src.sym import *
 from project_smo.src.data import *
@@ -93,15 +94,24 @@ def run_smo(budget0, budget, data_path):
     # best_lite = []
     # min_score = float('inf')
     best_d2h_list = []
+    total_time = 0
     for i in range(20):
         the.seed = i*10
         d = DATA(src=data_path)
         # budget = int(2 * len(d.rows) ** 0.5)
+        start_time = time.time()
         stats, bests = d.gate(budget0, budget, 0.5)
-        stat, best = stats[-1], bests[-1]
+        end_time = time.time()
+        execution_time = end_time - start_time
+        total_time += execution_time
+        best = bests[-1]
 
         best_d2h = best.d2h(d)
-        best_d2h_list.append(best_d2h)
+        if 'xomo' in data_path or 'dtlz' in data_path:
+            best_d2h_list.append(best_d2h*1000)    
+        else:
+            best_d2h_list.append(best_d2h)
+        # best_d2h_list.append(round(best_d2h*1000,2))
 
         # info = d2h_info(lite, d)
         # if info['min'] < min_score:
@@ -110,7 +120,8 @@ def run_smo(budget0, budget, data_path):
         # print(bests[-1].cells)
         # print(stats[-1].cells)
         # print(round(best.d2h(d),2), round(stat.d2h(d),2))
-    return best_d2h_list
+    # average_time = total_time/20
+    return [best_d2h_list, round(total_time/20,2)]
 
 
 def eg_gate20():

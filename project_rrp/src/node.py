@@ -18,7 +18,7 @@ class NODE:
         # if self.rights:
         #     self.rights.walk(fun, depth + 1)
 
-    def show(self, stop, max_depth=0):
+    def show(self, stop, data_i, max_depth=0):
 
         def d2h_info(data):
             summ = 0
@@ -26,19 +26,23 @@ class NODE:
             mini = 1
             n = 0
             # data.rows = data.rows[1:] ek change
-            data.rows.sort(key=lambda x: x.d2h(data))
+            data.rows.sort(key=lambda x: x.d2h(data_i))
+            # print("D2h")
+            # print(data.rows[0].d2h(data))
             data.rows = data.rows[:stop]
-            for row in data.rows:
-                n+=1
-                dis = row.d2h(data)
-                summ += dis
-                maxi = max(maxi, dis)
-                mini = min(mini, dis)
+            # for row in data.rows:
+            #     n+=1
+            #     dis = row.d2h(data)
+            #     summ += dis
+            #     maxi = max(maxi, dis)
+            #     mini = min(mini, dis)
+            #     if dis==0:
+            #         print(row.cells)
 
             # print(n)
             # print("n")
             # print({'mean': summ/n, 'min': mini, 'max': maxi})
-            return data.rows[0].d2h(data)
+            return data.rows[0].d2h(data_i)
 
         def _show(node, depth, is_leaf):
             post = ""

@@ -1,15 +1,16 @@
 import sys
 sys.path.append("../CSC591_ASE_HW_Group12/")
-from project_k_means.src.data import *
+from project_k_means.src.data3 import *
 from project_k_means.config import *
 from project_k_means.src import l
 from project_k_means.src.range import *
 from project_k_means.src.rule import *
 from project_k_means.src.rules import *
+import time
 import numpy as np
 
 def eg_dist():
-    d = DATA(src="data/auto93.csv")
+    d = DATA3(src="data/auto93.csv")
     r1 = d.rows[1]  
     rows = r1.neighbors(d)
 
@@ -26,18 +27,18 @@ def eg_far():
 
 def eg_tree():
     stop = 398
-    t, evals = DATA("data/auto93.csv").tree(True, stop)
+    t, evals = DATA3("data/auto93.csv").tree(True, stop)
     t.show(stop)
     print(f"evals: {evals}")
 
 def eg_branch():
-    d = DATA("data/auto93.csv")
+    d = DATA3("data/auto93.csv")
     best, rest, evals = d.branch()
     print(best.mid().cells)
     print(f"evals: {evals}")
 
 def eg_doubletap():
-    d = DATA("data/auto93.csv")
+    d = DATA3("data/auto93.csv")
     best1, rest, evals1 = d.branch(20)
     # best2, _, evals2 = best1.branch(4)
     print()
@@ -48,7 +49,7 @@ def score_range(range_obj, like_count, hate_count):
     return range_obj.score("LIKE", like_count, hate_count)
 
 def eg_bins():
-    d = DATA("data/auto93.csv")
+    d = DATA3("data/auto93.csv")
     best, rest, _ = d.branch()
     like = best.rows
     hate = rest.rows[:3 * len(like)] 
@@ -72,44 +73,62 @@ def eg_bins():
             v.custom_print()
 
     print({'LIKE': len(like), 'HATE': len(hate)})
-def run_k_means(data, budget=32, k_means_plus = False):
-    # d = DATA("data/auto93.csv")
-    d= DATA(data)
-    l = len(d.rows)
-    stop = budget
-    k= l//stop
-    clusters = d.k_means(k,budget, k_means_plus)
-    # print("Min d2h cluster label")
-    # print(clusters.index(min(clusters)))
-   
-    # print(min(clusters))
-    print(d2h_info(clusters, d))
-    # for cl in clusters:
-    #     print(cl)
-    #     print()
 
 def d2h_info(rows, data):
-    data.rows = rows
+    # data.rows = rows
     summ = 0
     maxi = 0
     mini = 1
     n = 0
     # data = DATA(rows, None, True)
-    for row in rows:
+    for row in data.rows[1:]:
         n+=1
         dis = row.d2h(data)
         summ += dis
         maxi = max(maxi, dis)
         mini = min(mini, dis)
 
-    print(n)
-    print("n")
+    # print(n)
+    # print("n")
+    return {'mean': summ/n, 'min': mini, 'max': maxi} 
+
+def run_k_means(data, budget=32, k_means_plus = False):
+    # d = DATA("data/auto93.csv")
+    d= DATA3(data)
+    # l = len(d.rows)
+    # stop = budget
+    # k= l//stop
+    best_points_list = []
+    total = 0
+    for i in range(4,24):
+        d= DATA3(data)
+        start = time.time()
+        best_points = d.k_means(i, budget, k_means_plus)
+        end = time.time()
+        exec = end-start
+        total += exec
+        info = d2h_info(best_points, d)
+        if 'xomo' in data or 'dtlz' in data:
+            best_points_list.append(info['min']*1000)    
+        else:
+            best_points_list.append(info['min'])
+        # best_points_list.append(info['min']*1000)
     
-    return {'mean': summ/n, 'min': mini, 'max': maxi}  
+    return [best_points_list, round(total/20,2)]
+    # print("Min d2h cluster label")
+    # print(clusters.index(min(clusters)))
+   
+    # print(min(clusters))
+    # print(d2h_info(clusters, d))
+    # for cl in clusters:
+    #     print(cl)
+    #     print()
+
+
 
 def eg_rules():
     for xxx in range(1, 2):  
-        d = DATA(the.file)  
+        d = DATA3(the.file)  
         
         best0, rest, evals1 = d.branch(the.d)
         best, _, evals2 = best0.branch(the.D)

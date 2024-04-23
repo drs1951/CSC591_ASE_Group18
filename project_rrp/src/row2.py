@@ -2,7 +2,7 @@ import sys
 sys.path.append('/project_rrp/src')
 from project_rrp.config import *
 
-class ROW:
+class ROW2:
     def __init__(self, cells):
         self.cells = cells
 
@@ -15,6 +15,24 @@ class ROW:
             else:
                 n += 1
                 d += abs(col.heaven - col.norm(self.cells[col.at])) ** p
+        if n==0:
+            print(self.cells)
+        if (d / n) ** (1 / p) == 0:
+            
+            for col in data.cols.y.values():
+                x = self.cells[col.at]
+                if x is None:
+                    print("?", end="")
+                else:
+                    # n += 1
+                    d += abs(col.heaven - col.norm(self.cells[col.at])) ** p
+                    # print(abs(col.heaven - col.norm(self.cells[col.at])) ** p)
+                    # print(col.norm(self.cells[col.at]))
+                    # print(col.heaven)
+                    # print(self.cells)
+                    # print(col.hi)
+                    # print(col.lo)
+                    # print("_____________")
         return (d / n) ** (1 / p) if n > 0 else 0
 
     def dist(self, other, data, p=None):

@@ -1,6 +1,6 @@
 from l import *
 
-class NODE:
+class NODE3:
     def __init__(self, data, lefts=None, rights=None):
         self.here = data
         self.lefts = lefts

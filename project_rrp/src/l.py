@@ -1,7 +1,7 @@
 import random
 import math
 from project_rrp.config import *
-from row import *
+from row2 import *
 
 def any_item(lst):
     return random.choice(lst)

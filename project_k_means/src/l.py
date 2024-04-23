@@ -1,7 +1,7 @@
 import random
 import math
 from project_k_means.config import *
-from row import *
+from row3 import *
 
 def any_item(lst):
     return random.choice(lst)
@@ -9,7 +9,7 @@ def any_item(lst):
 def o(t, ndecs=None):
     if isinstance(t, float):
         return rnd(t, ndecs)
-    if isinstance(t, ROW):
+    if isinstance(t, ROW3):
         return str(t.cells) + " "
     if not isinstance(t, dict) and not isinstance(t, list):
         return str(t)

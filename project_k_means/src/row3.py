@@ -1,6 +1,6 @@
 from project_k_means.config import *
 
-class ROW:
+class ROW3:
     def __init__(self, cells):
         self.cells = cells
 

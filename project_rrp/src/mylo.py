@@ -2,7 +2,7 @@ import sys
 import random
 sys.path.append("../CSC591_ASE_HW_Group12/")
 from project_rrp.test.tests import *
-from data import DATA
+from data import DATA2
 
 the = {
     "cohen": 0.35,
@@ -14,7 +14,7 @@ the = {
 random.seed(the["seed"])
 
 def get_stats(file):
-  data = DATA(src = file)
+  data = DATA2(src = file)
   print(data.mid().cells)
   
 def help():

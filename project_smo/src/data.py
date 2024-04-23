@@ -1,5 +1,6 @@
 import sys
-sys.path.append('/project_rrp/src')
+sys.path.append("../CSC591_ASE_HW_Group12/project_smo/src")
+# print(sys.path)
 from col import COLS
 from row import ROW
 import re,ast,fileinput
@@ -15,7 +16,6 @@ def csv(file="-"):
     for line in src:
       line = re.sub(r'([\n\t\r"\' ]|#.*)', '', line)
       if line: yield [coerce(x) for x in line.split(",")]
-
 
 class DATA:
     def __init__(self, src, fun=None):
@@ -67,9 +67,10 @@ class DATA:
         for i in range(budget):
             best, rest = self.best_rest(lite, len(lite) ** some)
             todo, selected = self.split(best, rest, lite, dark)
-            stats.append(selected.mid())
+            # stats.append(selected.mid())
             bests.append(best.rows[1])
-            lite.append(dark.pop(todo))
+            dark.pop(todo)
+            # lite.append()
         
         return stats, bests
 

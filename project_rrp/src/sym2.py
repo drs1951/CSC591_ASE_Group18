@@ -1,4 +1,4 @@
-class SYM:
+class SYM2:
     def __init__(self, txt="", at=0):
         self.txt = txt
         self.at = at
