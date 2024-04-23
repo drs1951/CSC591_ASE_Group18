@@ -113,6 +113,8 @@ def eg_smo9():
 def get_baseline(d):
     random.seed(the.seed)
     baseline = [row.d2h(d) for row in d.rows[1:]]
+    print(min(baseline))
+    print("baseline")
     return baseline    
 
 def get_rand(d, n):
